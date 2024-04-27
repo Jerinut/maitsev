@@ -38,10 +38,20 @@ public class RecipeService {
                 .build();
     }
 
+    private Recipe mapToRecipe(RecipeDto recipeDto){
+        return Recipe.builder()
+                .id(recipeDto.getId())
+                .title(recipeDto.getTitle())
+                .steps(recipeDto.getSteps())
+                .servingSize(recipeDto.getServingSize())
+                .ingredients(recipeDto.getIngredients())
+                .cookingTime(recipeDto.getCookingTime())
+                .cuisineType(recipeDto.getCuisineType())
+                .build();
+    }
+
     public void addRecipe(RecipeDto recipeDto) {
-        Recipe recipe = Recipe.builder()
-                        .id(recipeDto.getId())
-                                .build();
+        Recipe recipe = mapToRecipe(recipeDto);
         recipeRepository.save(recipe);
 
     }

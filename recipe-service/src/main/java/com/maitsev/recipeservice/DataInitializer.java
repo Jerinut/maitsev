@@ -47,16 +47,6 @@ public class DataInitializer {
             recipe2.setCookingTime("20mins");
             recipe2.setServingSize("2");
             recipeRepository.save(recipe2);
-//            profile1.setId("01");
-//            profile1.setPassword("1234");
-//            profile1.setUsername("jerin");
-//
-//            Profile profile2 = new Profile();
-//            profile2.setId("02");
-//            profile2.setPassword("1234");
-//            profile2.setUsername("kasper");
-//            profileRepository.save(profile1);
-//            profileRepository.save(profile2);
         };
     }
 }

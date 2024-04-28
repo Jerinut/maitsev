@@ -14,6 +14,7 @@ import com.maitsev.postservice.post.model.Post;
 import com.maitsev.profileservice.profile.dto.ProfileDto;
 import com.maitsev.profileservice.profile.model.Profile;
 import com.maitsev.profileservice.profile.repository.ProfileRepository;
+import com.maitsev.recipeservice.recipe.dto.RecipeDto;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -83,28 +84,6 @@ public class ProfileService {
                 .build();
         profileRepository.save(profile);
         log.info("Profile {} is updated", profile.getId());
-    }
-
-    public List<PostDto> getProfileAllPosts(String id) {
-        List<PostDto> allPosts = webClientBuilder
-                .build()
-                .get()
-                .uri("http://localhost:8001/api/posts")
-                .retrieve()
-                .bodyToFlux(PostDto.class)
-                .collectList()
-                .block();
-
-        return allPosts.stream()
-                .filter(post -> id.equals(post.getPostedById()))
-                .collect(Collectors.toList());
-    }
-
-    public Optional<PostDto> getSpecificProfilePost(String id, String postId) {
-        List<PostDto> allPosts = getProfileAllPosts(id);
-        return allPosts.stream()
-                .filter(post -> post.getId().equals(postId))
-                .findFirst();
     }
 
 }

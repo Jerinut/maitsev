@@ -12,17 +12,13 @@
         <module name="review-service" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="profile-service" target="17" />
-      <module name="recipe-service" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="post-service" options="-parameters" />
       <module name="profile-service" options="-parameters" />
-      <module name="recipe-service" options="-parameters" />
-      <module name="review-service" options="-parameters" />
+      <module name="recipe-service" options="" />
+      <module name="review-service" options="" />
     </option>
   </component>
 </project>

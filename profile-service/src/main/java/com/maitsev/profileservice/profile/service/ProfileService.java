@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -21,10 +23,14 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
 
     @Autowired
     private WebClient.Builder webClientBuilder;
@@ -107,4 +113,18 @@ public class ProfileService {
                 .findFirst();
     }
 
+//    kafka functions
+
+
+    public void sendMessageToOrderTopic(String message){
+        log.info("Message send to order topic: {} ", message);
+        kafkaTemplate.send("orderTopic", message);
+    }
+
+    private final KafkaTemplate<String, Profile> jsonKafkaTemplate;
+
+    public void sendJsonToOrderTopic(Profile profile){
+        log.info("Log message - Send order json object to order topic: {} ", profile.toString());
+        jsonKafkaTemplate.send("orderTopicJson", profile);
+    }
 }

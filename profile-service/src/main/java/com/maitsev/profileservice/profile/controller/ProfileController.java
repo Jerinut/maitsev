@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.maitsev.postservice.post.dto.PostDto;
+import com.maitsev.profileservice.profile.model.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -61,4 +63,19 @@ public class ProfileController {
     public void deleteProfile(@PathVariable String id) {
         profileService.deleteProfile(id);
     }
+
+    @GetMapping("/publish")
+    public ResponseEntity<String> publish(@RequestParam("message") String message){
+        profileService.sendMessageToOrderTopic(message);
+        return ResponseEntity.ok("Message sent to the order topic");
+    }
+
+    @PostMapping("/publish")
+    public ResponseEntity<String> publishjson(@RequestBody Profile profile){
+        profileService.sendJsonToOrderTopic(profile);
+        return ResponseEntity.ok("Json order object sent to the order topic");
+    }
+
+
+
 }

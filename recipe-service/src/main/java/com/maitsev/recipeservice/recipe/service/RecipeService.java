@@ -32,6 +32,10 @@ public class RecipeService {
     private RecipeDto mapToRecipeDto(Recipe recipe) {
         return RecipeDto.builder()
                 .id(recipe.getId())
+                .title(recipe.getTitle())
+                .postedById(recipe.getPostedById())
+                .steps(recipe.getSteps())
+                .cuisineType(recipe.getCuisineType())
                 .ingredients(recipe.getIngredients())
                 .servingSize(recipe.getServingSize())
                 .cookingTime(recipe.getCookingTime())
@@ -47,6 +51,7 @@ public class RecipeService {
                 .ingredients(recipeDto.getIngredients())
                 .cookingTime(recipeDto.getCookingTime())
                 .cuisineType(recipeDto.getCuisineType())
+                .postedById(recipeDto.getPostedById())
                 .build();
     }
 
@@ -67,9 +72,7 @@ public class RecipeService {
     }
 
     public void updateRecipe(String id, RecipeDto recipeDto) {
-        Recipe recipe = Recipe.builder()
-                .id(recipeDto.getId())
-                .build();
+        Recipe recipe = mapToRecipe(recipeDto);
         recipeRepository.save(recipe);
     }
 
@@ -77,7 +80,7 @@ public class RecipeService {
         List<RecipeDto> allRecipes = webClientBuilder
                 .build()
                 .get()
-                .uri("http://localhost:8002/api/recipes")
+                .uri("http://localhost:8003/api/recipes")
                 .retrieve()
                 .bodyToFlux(RecipeDto.class)
                 .collectList()

@@ -121,3 +121,63 @@ content-type: application/json
 
 ### Delete a review
 DELETE    http://localhost:8002/api/reviews/01
+
+#### Recipe Service
+
+####GET ALL RECIPES
+
+GET http://localhost:8003/api/recipes
+
+### GET Specific recipe
+GET http://loclhost:8003/api/recipes/01
+
+## ADD A recipe
+POST http://localhost:8003/api/recipes HTTP/1.1
+content-type: application/json
+
+{
+        "id": "03",
+        "title": "ChICKEN CURRY",
+        "ingredients": [
+            "pasta",
+            "cheese",
+            "milk",
+            "tomato sauce"
+        ],
+        "servingSize": "2",
+        "cookingTime": "20mins",
+        "cuisineType": "Indian",
+        "steps": "4",
+        "postedById": null
+    }
+
+ ### Edit a recipe
+
+ PUT   http://localhost:8003/api/recipes/03 HTTP/1.1
+ content-type: application/json
+
+{
+    "id": "03",
+    "title": "pasta",
+    "ingredients": [
+        "pasta",
+        "cheese",
+        "milk",
+        "tomato sauce"
+    ],
+    "servingSize": "2",
+    "cookingTime": "20mins",
+    "cuisineType": "Italian",
+    "steps": "4",
+    "postedById": "02"
+}
+
+### Delete a Recipe
+
+DELETE http://localhost:8003/api/recipes/03
+
+## GET RECIPE FOR SPECIFIC PROFILE
+GET http://localhost:8003/api/recipes/02/recipes
+
+## '02' is userid
+

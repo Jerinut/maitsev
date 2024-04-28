@@ -221,3 +221,19 @@ GET http://localhost:8003/api/profiles/01/recipes
 
 ### GET A SPECIFIC RECIPE FOR SPECIFIC PROFILE
 GET http://localhost:8003/api/profiles/01/recipes/01
+
+
+
+# Basic API Gateway GET requests for each service
+
+### Get all profiles
+GET http://localhost:8080/api/profiles 
+### Get all posts
+GET http://localhost:8080/api/posts 
+
+### Get all recipes
+GET http://localhost:8080/api/recipes
+
+### Get all reviews
+GET http://localhost:8080/api/reviews
+

@@ -46,17 +46,17 @@ public class CommentService {
         log.info("Comment {} is added to the Database", comment.getId());
     }
 
-    public Optional<CommentDto> getComment(Long id) {
+    public Optional<CommentDto> getComment(String id) {
         Optional<Comment> comment = commentRepository.findById(id);
         return comment.map(this::mapToCommentDto);
     }
 
-    public void deleteComment(Long id) {
+    public void deleteComment(String id) {
         commentRepository.deleteById(id);
         log.info("A Comment has been deleted");
     }
 
-    public void updateComment(Long id, CommentDto commentDto) {
+    public void updateComment(String id, CommentDto commentDto) {
         Comment comment = Comment.builder()
             .id(commentDto.getId())
             .text(commentDto.getText())

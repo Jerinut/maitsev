@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import org.springframework.context.annotation.Profile;
 
+import com.maitsev.postservice.post.model.Post;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

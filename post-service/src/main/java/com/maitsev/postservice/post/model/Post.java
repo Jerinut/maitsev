@@ -3,6 +3,8 @@ package com.maitsev.postservice.post.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.maitsev.postservice.comment.model.Comment;
+
 // import org.springframework.context.annotation.Profile;
 
 import jakarta.persistence.CascadeType;

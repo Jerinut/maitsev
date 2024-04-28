@@ -25,16 +25,13 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
     
-    @Autowired
-    private PostService postService;  // Inject the PostService
-
     @GetMapping("/posts/{id}/comments")
     public List<CommentDto> getAllComments() {
         return commentService.getAllComments();
     }
 
     @GetMapping("/posts/{id}/comments/{commentId}")
-    public Optional<CommentDto> getComment(@PathVariable Long commentId) {
+    public Optional<CommentDto> getComment(@PathVariable String commentId) {
         return commentService.getComment(commentId);
     }
 
@@ -44,12 +41,12 @@ public class CommentController {
     }
 
     @PutMapping("/posts/{id}/comments/{commentId}")
-    public void updateComment(@RequestBody CommentDto commentDto, @PathVariable Long commentId) {
+    public void updateComment(@RequestBody CommentDto commentDto, @PathVariable String commentId) {
         commentService.updateComment(commentId, commentDto);
     }
 
     @DeleteMapping("/posts/{id}/comments/{commentId}")
-    public void deleteComment(@PathVariable Long commentId) {
+    public void deleteComment(@PathVariable String commentId) {
         commentService.deleteComment(commentId);
     }
 }

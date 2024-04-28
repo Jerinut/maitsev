@@ -48,4 +48,14 @@ public class PostController {
   public void deletePost(@PathVariable String id) {
     postservice.deletePost(id);
   }
+
+  @GetMapping("/profiles/{id}/posts")
+  public List<PostDto> getProfilePosts(@PathVariable String id) {
+    return postservice.getProfileAllPosts(id);
+  }
+
+  @GetMapping("/profiles/{id}/posts/{postid}")
+  public Optional<PostDto> getSpecificProfilePost(@PathVariable String id, @PathVariable String postid) {
+    return postservice.getSpecificProfilePost(id, postid);
+  }
 }

@@ -3,6 +3,7 @@ package com.maitsev.postservice.post.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,5 +79,27 @@ public class PostService {
         .build();
     postRepository.save(post);
     log.info("Post {} is updated", post.getId());
+  }
+
+  public List<PostDto> getProfileAllPosts(String id) {
+    List<PostDto> allPosts = webClientBuilder
+        .build()
+        .get()
+        .uri("http://localhost:8001/api/posts")
+        .retrieve()
+        .bodyToFlux(PostDto.class)
+        .collectList()
+        .block();
+
+    return allPosts.stream()
+        .filter(post -> id.equals(post.getPostedById()))
+        .collect(Collectors.toList());
+  }
+
+  public Optional<PostDto> getSpecificProfilePost(String id, String postId) {
+    List<PostDto> allPosts = getProfileAllPosts(id);
+    return allPosts.stream()
+        .filter(post -> post.getId().equals(postId))
+        .findFirst();
   }
 }

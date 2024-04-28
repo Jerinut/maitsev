@@ -77,7 +77,8 @@ public class ProfileService {
         List<PostDto> allPosts = webClientBuilder
                 .build()
                 .get()
-                .uri("http://localhost:8001/api/posts")
+                // .uri("http://localhost:8001/api/posts")
+                .uri("http://post-service/api/posts/")
                 .retrieve()
                 .bodyToFlux(PostDto.class)
                 .collectList()

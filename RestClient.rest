@@ -2,6 +2,9 @@
 ### Get All profiles
 GET http://localhost:8000/api/profiles
 
+### Get All profiles through API gateway
+GET http://localhost:8080/api/profiles
+
 ### Get Specific profile
 GET http://localhost:8000/api/profiles/01
 
@@ -33,6 +36,10 @@ DELETE    http://localhost:8000/api/profiles/03
 
 ### Get All Posts
 GET http://localhost:8001/api/posts
+
+### Get All Posts through API Gateway
+GET http://localhost:8080/api/posts
+
 
 ### Get specific post
 GET http://localhost:8001/api/posts/01
@@ -91,6 +98,9 @@ GET http://localhost:8000/api/profiles/01/posts/01
 # Testing review service
 ### Get All reviews
 GET http://localhost:8002/api/reviews
+
+### Get All reviews through API gateway
+GET http://localhost:8080/api/reviews
 
 ### Get Specific review
 GET http://localhost:8002/api/reviews/01

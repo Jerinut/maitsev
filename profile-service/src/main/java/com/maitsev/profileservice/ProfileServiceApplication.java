@@ -4,8 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class ProfileServiceApplication {
 
 	@Bean
@@ -16,6 +19,7 @@ public class ProfileServiceApplication {
 	// RestTemplate.
 	// Unlike RestTemplate (synchronous), WebClient is a reactive (asynchronous),
 	// non-blocking solution that works over the HTTP/1.1 protocol.
+	@LoadBalanced
 	public WebClient.Builder getWebClientBuilder() {
 		return WebClient.builder();
 	}

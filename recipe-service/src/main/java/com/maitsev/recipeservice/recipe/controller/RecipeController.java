@@ -25,7 +25,7 @@ public class RecipeController {
         return recipeService.getRecipe(id);
     }
 
-    @GetMapping("/recipes/{id}/recipes")
+    @GetMapping("/profile/{id}/recipes")
     public List<RecipeDto> getProfileRecipes(@PathVariable String id) {
         return recipeService.getProfileAllRecipes(id);
     }

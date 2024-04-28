@@ -86,3 +86,38 @@ GET http://localhost:8000/api/profiles/01/posts
 
 ### Get a specific user post
 GET http://localhost:8000/api/profiles/01/posts/01
+
+
+# Testing review service
+### Get All reviews
+GET http://localhost:8002/api/reviews
+
+### Get Specific review
+GET http://localhost:8002/api/reviews/01
+
+### Add a review
+POST  http://localhost:8002/api/reviews HTTP/1.1
+content-type: application/json
+
+{
+    "id": "01",
+    "recipeId": "01",
+    "createdAt": "2024-03-17",
+    "postedBy": "01",
+    "score": 5.5
+}
+
+### Update a review
+PUT   http://localhost:8002/api/reviews/01 HTTP/1.1
+content-type: application/json
+
+{
+    "id": "01",
+    "recipeId": "01",
+    "createdAt": "2024-03-17",
+    "postedBy": "01",
+    "score": 5.7
+}
+
+### Delete a review
+DELETE    http://localhost:8002/api/reviews/01

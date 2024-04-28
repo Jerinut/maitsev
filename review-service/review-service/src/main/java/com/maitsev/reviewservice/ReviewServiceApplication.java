@@ -1,4 +1,4 @@
-package com.maitsev.profileservice;
+package com.maitsev.reviewservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
-public class ProfileServiceApplication {
+public class ReviewServiceApplication {
 
 	@Bean
 	// WebClient.Builder is mutable builder for creating a WebClient.
@@ -21,8 +21,8 @@ public class ProfileServiceApplication {
 	}
 
 	public static void main(String[] args) {
-		DataBaseInitializer.initialize("profile_service_db");
-		SpringApplication.run(ProfileServiceApplication.class, args);
+		DataBaseInitializer.initialize("review_service_db");
+		SpringApplication.run(ReviewServiceApplication.class, args);
 	}
 
 }

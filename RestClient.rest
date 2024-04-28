@@ -78,7 +78,7 @@ Content-Type: application/json
 DELETE http://localhost:8001/api/posts/02
 
 ### Get all posts that an user has made
-GET http://localhost:8001/api/profiles/01/posts 
+GET http://localhost:8001/api/profiles/01/posts
 
 ### Get a specific post made by a specific user
 GET http://localhost:8001/api/profiles/01/posts/01
@@ -227,9 +227,9 @@ GET http://localhost:8003/api/profiles/01/recipes/01
 # Basic API Gateway GET requests for each service
 
 ### Get all profiles
-GET http://localhost:8080/api/profiles 
+GET http://localhost:8080/api/profiles
 ### Get all posts
-GET http://localhost:8080/api/posts 
+GET http://localhost:8080/api/posts
 
 ### Get all recipes
 GET http://localhost:8080/api/recipes
@@ -237,3 +237,69 @@ GET http://localhost:8080/api/recipes
 ### Get all reviews
 GET http://localhost:8080/api/reviews
 
+
+#Testing chat service
+
+### Get All chats
+GET http://localhost:8005/api/chats
+
+### Get Specific chat
+GET http://localhost:8005/api/chats/01
+
+### Add a chat
+POST  http://localhost:8005/api/chats HTTP/1.1
+content-type: application/json
+
+{
+  "id": "02",
+  "user1Id": "01",
+  "user2Id": "02",
+  "createdAt": "2024-04-28"
+}
+### Update a chat
+PUT   http://localhost:8005/api/chats/01 HTTP/1.1
+content-type: application/json
+
+{
+  "id": "01",
+  "user1Id": "01",
+  "user2Id": "02",
+  "createdAt": "2024-03-28"
+}
+
+### Delete a chat
+DELETE    http://localhost:8005/api/chats/01
+
+### Get All messages in a chat
+GET http://localhost:8005/api/chats/01/messages
+
+### Get Specific message in a chat
+GET http://localhost:8005/api/chats/01/messages/01
+
+### Add a message to a chat
+POST http://localhost:8005/api/chats/01/messages HTTP/1.1
+content-type: application/json
+
+{
+  "id": "01",
+  "sender": "user1Id",
+  "receiver": "user2Id",
+  "content": "Hello, how are you?",
+  "createdAt": "2024-04-28"
+}
+
+### Update a message in a chat
+PUT http://localhost:8005/api/chats/01/messages/001 HTTP/1.1
+content-type: application/json
+
+{
+  "id": "001",
+  "sender": "user1Id",
+  "receiver": "user2Id",
+  "content": "Hello, how are you today?",
+  "createdAt": "2024-04-28"
+
+}
+
+### Delete a message in a chat
+DELETE http://localhost:8005/api/chats/01/messages/001

@@ -42,7 +42,7 @@ public class RecipeService {
                 .build();
     }
 
-    private Recipe mapToRecipe(RecipeDto recipeDto){
+    private Recipe mapToRecipe(RecipeDto recipeDto) {
         return Recipe.builder()
                 .id(recipeDto.getId())
                 .title(recipeDto.getTitle())
@@ -89,15 +89,13 @@ public class RecipeService {
         return allRecipes.stream()
                 .filter(recipe -> id.equals(recipe.getPostedById()))
                 .collect(Collectors.toList());
-
     }
 
-//    public Optional<RecipeDto> getSpecificRecipe(String id, String postId) {
-//        List<RecipeDto> allPosts = getAllRecipes();
-//        return allPosts.stream()
-//                .filter(post -> post.getId().equals(postId))
-//                .findFirst();
-//    }
-
+    public Optional<RecipeDto> getSpecificProfileRecipe(String id, String recipeId) {
+        List<RecipeDto> allRecipes = getProfileAllRecipes(id);
+        return allRecipes.stream()
+                .filter(recipe -> recipe.getId().equals(recipeId))
+                .findFirst();
+    }
 
 }

@@ -1,4 +1,4 @@
-# Testing profile service
+# Basic profile service requests
 
 ### Get All profiles
 GET http://localhost:8000/api/profiles
@@ -37,7 +37,8 @@ Content-Type: application/json
 ### Delete a profile
 DELETE http://localhost:8000/api/profiles/03
 
-# Testing post service
+
+# Basic post service requests
 
 ### Get All Posts
 GET http://localhost:8001/api/posts
@@ -76,25 +77,12 @@ Content-Type: application/json
 ### Delete a post
 DELETE http://localhost:8001/api/posts/02
 
-### Second post for one user for later check
-POST http://localhost:8001/api/posts HTTP/1.1
-Content-Type: application/json
+### Get all posts that an user has made
+GET http://localhost:8001/api/profiles/01/posts
 
-{
-    "id": "02",
-    "description": "Second post for user with id 1",
-    "imgUrl": "image2.jpg",
-    "likes": 0,
-    "createdAt": "2024-03-17",
-    "postedById": "01",
-    "tags": ["Vegetarian", "Gluten-free"]
-}
+### Get a specific post made by a specific user
+GET http://localhost:8001/api/profiles/01/posts/01
 
-### Get all user posts
-GET http://localhost:8000/api/profiles/01/posts 
-
-### Get a specific user post
-GET http://localhost:8000/api/profiles/01/posts/01
 
 ### Get all comments for a specific post
 GET http://localhost:8001/api/posts/01/comments
@@ -127,7 +115,8 @@ Content-Type: application/json
 ### Delete a comment
 DELETE http://localhost:8001/api/posts/01/comments/03 HTTP/1.1
 
-# Testing review service
+
+# Basic review service requests
 
 ### Get All reviews
 GET http://localhost:8002/api/reviews
@@ -140,11 +129,11 @@ POST http://localhost:8002/api/reviews HTTP/1.1
 Content-Type: application/json
 
 {
-    "id": "01",
+    "id": "02",
     "recipeId": "01",
     "createdAt": "2024-03-17",
-    "postedBy": "01",
-    "score": 5.5
+    "postedBy": "02",
+    "score": 5.7
 }
 
 ### Update a review
@@ -162,7 +151,21 @@ Content-Type: application/json
 ### Delete a review
 DELETE http://localhost:8002/api/reviews/01
 
-# Recipe Service
+### Get All reviews for a specific recipe
+GET http://localhost:8002/api/recipes/01/reviews
+
+### Get a specific review for a specific recipe
+GET http://localhost:8002/api/recipes/01/reviews/01
+
+### Get All reviews for a specific recipe
+GET http://localhost:8002/api/profiles/01/reviews
+
+### Get a specific review for a specific recipe
+GET http://localhost:8002/api/profiles/01/reviews/01
+
+
+
+# Basic recipe service requests
 
 ### GET ALL RECIPES
 GET http://localhost:8003/api/recipes
@@ -214,8 +217,25 @@ Content-Type: application/json
 DELETE http://localhost:8003/api/recipes/03
 
 ### GET RECIPE FOR SPECIFIC PROFILE
-GET http://localhost:8003/api/profile/02/recipes
-DELETE    http://localhost:8002/api/reviews/01
+GET http://localhost:8003/api/profiles/01/recipes
+
+### GET A SPECIFIC RECIPE FOR SPECIFIC PROFILE
+GET http://localhost:8003/api/profiles/01/recipes/01
+
+
+
+# Basic API Gateway GET requests for each service
+
+### Get all profiles
+GET http://localhost:8080/api/profiles
+### Get all posts
+GET http://localhost:8080/api/posts
+
+### Get all recipes
+GET http://localhost:8080/api/recipes
+
+### Get all reviews
+GET http://localhost:8080/api/reviews
 
 
 #Testing chat service

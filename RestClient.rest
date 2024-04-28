@@ -215,3 +215,71 @@ DELETE http://localhost:8003/api/recipes/03
 
 ### GET RECIPE FOR SPECIFIC PROFILE
 GET http://localhost:8003/api/profile/02/recipes
+DELETE    http://localhost:8002/api/reviews/01
+
+
+#Testing chat service
+
+### Get All chats
+GET http://localhost:8005/api/chats
+
+### Get Specific chat
+GET http://localhost:8005/api/chats/01
+
+### Add a chat
+POST  http://localhost:8005/api/chats HTTP/1.1
+content-type: application/json
+
+{
+  "id": "02",
+  "user1Id": "01",
+  "user2Id": "02",
+  "createdAt": "2024-04-28"
+}
+### Update a chat
+PUT   http://localhost:8005/api/chats/01 HTTP/1.1
+content-type: application/json
+
+{
+  "id": "01",
+  "user1Id": "01",
+  "user2Id": "02",
+  "createdAt": "2024-03-28"
+}
+
+### Delete a chat
+DELETE    http://localhost:8005/api/chats/01
+
+### Get All messages in a chat
+GET http://localhost:8005/api/chats/01/messages
+
+### Get Specific message in a chat
+GET http://localhost:8005/api/chats/01/messages/01
+
+### Add a message to a chat
+POST http://localhost:8005/api/chats/01/messages HTTP/1.1
+content-type: application/json
+
+{
+  "id": "01",
+  "sender": "user1Id",
+  "receiver": "user2Id",
+  "content": "Hello, how are you?",
+  "createdAt": "2024-04-28"
+}
+
+### Update a message in a chat
+PUT http://localhost:8005/api/chats/01/messages/001 HTTP/1.1
+content-type: application/json
+
+{
+  "id": "001",
+  "sender": "user1Id",
+  "receiver": "user2Id",
+  "content": "Hello, how are you today?",
+  "createdAt": "2024-04-28"
+
+}
+
+### Delete a message in a chat
+DELETE http://localhost:8005/api/chats/01/messages/001

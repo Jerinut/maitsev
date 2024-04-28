@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="profiletable")
+@Table(name = "profiletable")
 @Builder
 @Data
 @AllArgsConstructor
@@ -35,4 +35,3 @@ public class Profile {
     }
 
 }
-

@@ -40,6 +40,10 @@ public class ProfileService {
                 .id(profile.getId())
                 .username(profile.getUsername())
                 .password(profile.getPassword())
+                .bio(profile.getBio())
+                .cuisines(profile.getCuisines())
+                .likedIngredients(profile.getLikedIngredients())
+                .dislikedIngredients(profile.getDislikedIngredients())
                 .build();
     }
 
@@ -48,6 +52,10 @@ public class ProfileService {
                 .id(profileDto.getId())
                 .username(profileDto.getUsername())
                 .password(profileDto.getPassword())
+                .bio(profileDto.getBio())
+                .cuisines(profileDto.getCuisines())
+                .likedIngredients(profileDto.getLikedIngredients())
+                .dislikedIngredients(profileDto.getDislikedIngredients())
                 .build();
         profileRepository.save(profile);
         log.info("Profile {} is added to the Database", profile.getId());
@@ -68,6 +76,10 @@ public class ProfileService {
                 .id(profileDto.getId())
                 .username(profileDto.getUsername())
                 .password(profileDto.getPassword())
+                .bio(profileDto.getBio())
+                .cuisines(profileDto.getCuisines())
+                .likedIngredients(profileDto.getLikedIngredients())
+                .dislikedIngredients(profileDto.getDislikedIngredients())
                 .build();
         profileRepository.save(profile);
         log.info("Profile {} is updated", profile.getId());

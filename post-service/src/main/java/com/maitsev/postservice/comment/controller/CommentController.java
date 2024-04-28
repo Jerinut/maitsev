@@ -26,27 +26,27 @@ public class CommentController {
     private CommentService commentService;
     
     @GetMapping("/posts/{id}/comments")
-    public List<CommentDto> getAllComments() {
-        return commentService.getAllComments();
+    public List<CommentDto> getAllCommentsByPostId(@PathVariable String id) {
+        return commentService.getAllCommentsByPostId(id);
     }
 
     @GetMapping("/posts/{id}/comments/{commentId}")
-    public Optional<CommentDto> getComment(@PathVariable String commentId) {
-        return commentService.getComment(commentId);
+    public Optional<CommentDto> getComment(@PathVariable String id, @PathVariable String commentId) {
+        return commentService.getComment(id, commentId);
     }
 
     @PostMapping("/posts/{id}/comments")
-    public void addComment(@RequestBody CommentDto commentDto) {
-        commentService.addComment(commentDto);
+    public void addComment(@RequestBody CommentDto commentDto, @PathVariable String id) {
+        commentService.addComment(commentDto, id);
     }
 
     @PutMapping("/posts/{id}/comments/{commentId}")
-    public void updateComment(@RequestBody CommentDto commentDto, @PathVariable String commentId) {
-        commentService.updateComment(commentId, commentDto);
+    public void updateComment(@RequestBody CommentDto commentDto, @PathVariable String id, @PathVariable String commentId) {
+        commentService.updateComment(id, commentId, commentDto);
     }
 
     @DeleteMapping("/posts/{id}/comments/{commentId}")
-    public void deleteComment(@PathVariable String commentId) {
-        commentService.deleteComment(commentId);
+    public void deleteComment(@PathVariable String id, @PathVariable String commentId) {
+        commentService.deleteComment(id, commentId);
     }
 }

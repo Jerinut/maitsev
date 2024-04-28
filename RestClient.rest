@@ -96,6 +96,21 @@ GET http://localhost:8000/api/profiles/01/posts
 ### Get a specific user post
 GET http://localhost:8000/api/profiles/01/posts/01
 
+### Get all comments for a specific post
+GET http://localhost:8001/api/posts/01/comments
+
+### Add a comment to a specific post
+POST http://localhost:8001/api/posts/01/comments HTTP/1.1
+Content-Type: application/json
+
+{   
+    "id": "03",
+    "text": "This is a comment",
+    "createdAt": "2024-03-17T16:34:50.68211",
+    "postedById": "01"
+}
+
+### Delete a comment
 
 # Testing review service
 ### Get All reviews

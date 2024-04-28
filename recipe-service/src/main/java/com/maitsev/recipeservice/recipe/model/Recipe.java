@@ -28,6 +28,8 @@ public class Recipe {
         private String cuisineType;
         private String steps;
 
+        private String postedById;
+
         public Recipe(String id) {
                 this.id = id;
         }

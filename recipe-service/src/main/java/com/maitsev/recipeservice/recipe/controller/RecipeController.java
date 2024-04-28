@@ -27,14 +27,13 @@ public class RecipeController {
 
     @GetMapping("/recipes/{id}/recipes")
     public List<RecipeDto> getProfileRecipes(@PathVariable String id) {
-        return recipeService.getAllRecipes();
+        return recipeService.getProfileAllRecipes(id);
     }
 
 //    @GetMapping("/profiles/{id}/posts/{postid}")
 //    public Optional<RecipeDto> getSpecificProfileRecipe(@PathVariable String id, @PathVariable String postid) {
-////        return recipeService.(id, postid);
-////
-//        return null
+//       return recipeService.(id, postid);
+//
 //    }
 
     @PostMapping("/recipes")

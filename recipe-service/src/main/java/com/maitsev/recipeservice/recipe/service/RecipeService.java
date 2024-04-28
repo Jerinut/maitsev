@@ -73,20 +73,21 @@ public class RecipeService {
         recipeRepository.save(recipe);
     }
 
-//    public List<RecipeDto> getProfileAllPosts(String id) {
-//        List<RecipeDto> allPosts = webClientBuilder
-//                .build()
-//                .get()
-//                .uri("http://localhost:8002/api/recipes")
-//                .retrieve()
-//                .bodyToFlux(RecipeDto.class)
-//                .collectList()
-//                .block();
-//
-//        return allPosts.stream()
-//                .filter(post -> id.equals(p.getPostedById()))
-//                .collect(Collectors.toList());
-//    }
+    public List<RecipeDto> getProfileAllRecipes(String id) {
+        List<RecipeDto> allRecipes = webClientBuilder
+                .build()
+                .get()
+                .uri("http://localhost:8002/api/recipes")
+                .retrieve()
+                .bodyToFlux(RecipeDto.class)
+                .collectList()
+                .block();
+
+        return allRecipes.stream()
+                .filter(recipe -> id.equals(recipe.getPostedById()))
+                .collect(Collectors.toList());
+
+    }
 
 //    public Optional<RecipeDto> getSpecificRecipe(String id, String postId) {
 //        List<RecipeDto> allPosts = getAllRecipes();

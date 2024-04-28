@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 @Configuration
 public class DataInitializer {
@@ -21,6 +22,7 @@ public class DataInitializer {
             post1.setImgUrl("imgurl");
             post1.setLikes(12);
             post1.setPostedById("01");
+            post1.setTags(Arrays.asList("Vegan", "Spicy"));
             postRepository.save(post1);
 
             Comment comment1 = new Comment();

@@ -55,7 +55,8 @@ Content-Type: application/json
     "imgUrl": "image2.jpg",
     "likes": 0,
     "createdAt": "2024-03-17",
-    "postedById": "02"
+    "postedById": "02",
+    "tags": ["Vegan", "Gluten-free"]
 }
 
 ### Update a post
@@ -68,7 +69,8 @@ Content-Type: application/json
     "imgUrl": "updated_image.jpg",
     "likes": 10,
     "createdAt": "2024-03-17",
-    "postedById": "01"
+    "postedById": "01",
+    "tags": ["Vegetarian", "Gluten-free"]
 }
 
 ### Delete a post
@@ -84,7 +86,8 @@ Content-Type: application/json
     "imgUrl": "image2.jpg",
     "likes": 0,
     "createdAt": "2024-03-17",
-    "postedById": "01"
+    "postedById": "01",
+    "tags": ["Vegetarian", "Gluten-free"]
 }
 
 ### Get all user posts
@@ -107,7 +110,22 @@ Content-Type: application/json
     "postedById": "01"
 }
 
+### Get a specific comment on a specific post
+GET http://localhost:8001/api/posts/01/comments/03 HTTP/1.1
+
+### Update a specific comment on a specific post
+PUT http://localhost:8001/api/posts/01/comments/03 HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "03",
+    "text": "This is an updated comment",
+    "createdAt": "2024-03-18T16:34:50.68211",
+    "postedById": "01"
+}
+
 ### Delete a comment
+DELETE http://localhost:8001/api/posts/01/comments/03 HTTP/1.1
 
 # Testing review service
 

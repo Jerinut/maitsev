@@ -23,5 +23,6 @@ public class PostDto {
   private Integer likes;
   private LocalDate createdAt;
   private String postedById;
+  private List<String> tags;
   private List<String> comments;
 }

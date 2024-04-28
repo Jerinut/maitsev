@@ -8,6 +8,7 @@ import com.maitsev.postservice.comment.model.Comment;
 // import org.springframework.context.annotation.Profile;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -32,6 +33,9 @@ public class Post {
   private LocalDate createdAt;
   private String postedById;
 
+  @ElementCollection
+  private List<String> tags;
+  
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
   private List<Comment> comments;
 }

@@ -38,6 +38,7 @@ public class PostService {
         .likes(post.getLikes())
         .createdAt(post.getCreatedAt())
         .postedById(post.getPostedById())
+        .tags(post.getTags())
         .build();
   }
 
@@ -49,6 +50,7 @@ public class PostService {
         .likes(postDto.getLikes())
         .createdAt(postDto.getCreatedAt())
         .postedById(postDto.getPostedById())
+        .tags(postDto.getTags())
         .build();
     postRepository.save(post);
     log.info("Post {} is added to the Database", post.getId());
@@ -72,6 +74,7 @@ public class PostService {
         .likes(postDto.getLikes())
         .createdAt(postDto.getCreatedAt())
         .postedById(postDto.getPostedById())
+        .tags(postDto.getTags())
         .build();
     postRepository.save(post);
     log.info("Post {} is updated", post.getId());

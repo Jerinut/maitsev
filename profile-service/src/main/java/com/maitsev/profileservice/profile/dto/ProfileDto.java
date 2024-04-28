@@ -1,5 +1,7 @@
 package com.maitsev.profileservice.profile.dto;
 
+import java.util.List;
+
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +18,11 @@ public class ProfileDto {
     private String id;
     private String username;
     private String password;
-
+    private String bio;
+    private List<String> cuisines;
+    private List<String> likedIngredients;
+    private List<String> dislikedIngredients;
+    
     public ProfileDto(String id){
         this.id = id;
     }

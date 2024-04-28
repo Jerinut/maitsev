@@ -1,4 +1,5 @@
 # Testing profile service
+
 ### Get All profiles
 GET http://localhost:8000/api/profiles
 
@@ -12,7 +13,11 @@ content-type: application/json
 {
     "id": "03",
     "username": "henri",
-    "password": "parool"
+    "password": "parool",
+    "bio": "Bio for Henri",
+    "cuisines": ["Italian", "Mexican"],
+    "likedIngredients": ["Cheese", "Tomato"],
+    "dislikedIngredients": ["Onion", "Garlic"]
 }
 
 ### Update a profile
@@ -22,7 +27,11 @@ content-type: application/json
 {
     "id": "03",
     "username": "fidan",
-    "password": "parool"
+    "password": "parool",
+    "bio": "Bio for Fidan",
+    "cuisines": ["Chinese", "Indian"],
+    "likedIngredients": ["Chicken", "Rice"],
+    "dislikedIngredients": ["Fish", "Egg"]
 }
 
 ### Delete a profile

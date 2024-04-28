@@ -67,13 +67,13 @@ public class ProfileController {
     @GetMapping("/publish")
     public ResponseEntity<String> publish(@RequestParam("message") String message){
         profileService.sendMessageToOrderTopic(message);
-        return ResponseEntity.ok("Message sent to the order topic");
+        return ResponseEntity.ok("Message sent to the profile update topic");
     }
 
     @PostMapping("/publish")
     public ResponseEntity<String> publishjson(@RequestBody Profile profile){
         profileService.sendJsonToOrderTopic(profile);
-        return ResponseEntity.ok("Json order object sent to the order topic");
+        return ResponseEntity.ok("Json order object sent to the profile update topic");
     }
 
 

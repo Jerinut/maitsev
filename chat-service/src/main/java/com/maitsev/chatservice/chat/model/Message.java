@@ -2,6 +2,7 @@ package com.maitsev.chatservice.chat.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -24,5 +25,6 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
+    @JsonIgnore
     private Chat chat;
 };

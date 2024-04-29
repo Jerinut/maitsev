@@ -48,4 +48,24 @@ public class ReviewController {
     public void deleteReview(@PathVariable String id) {
         reviewService.deleteReview(id);
     }
+
+    @GetMapping("/recipes/{id}/reviews")
+    public List<ReviewDto> getProfilePosts(@PathVariable String id) {
+        return reviewService.getRecipeAllReviews(id);
+    }
+
+    @GetMapping("/recipes/{id}/reviews/{reviewId}")
+    public Optional<ReviewDto> getSpecificProfilePost(@PathVariable String id, @PathVariable String reviewId) {
+        return reviewService.getSpecificRecipeReview(id, reviewId);
+    }
+
+    @GetMapping("/profiles/{id}/reviews")
+    public List<ReviewDto> getProfileAllReviews(@PathVariable String id) {
+        return reviewService.getProfileAllReviews(id);
+    }
+
+    @GetMapping("/profiles/{id}/reviews/{reviewId}")
+    public Optional<ReviewDto> getSpecificProfileReview(@PathVariable String id, @PathVariable String reviewId) {
+        return reviewService.getSpecificProfileReview(id, reviewId);
+    }
 }

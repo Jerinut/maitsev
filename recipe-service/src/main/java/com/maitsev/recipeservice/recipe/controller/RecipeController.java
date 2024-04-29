@@ -25,16 +25,15 @@ public class RecipeController {
         return recipeService.getRecipe(id);
     }
 
-    @GetMapping("/profile/{id}/recipes")
+    @GetMapping("/profiles/{id}/recipes")
     public List<RecipeDto> getProfileRecipes(@PathVariable String id) {
         return recipeService.getProfileAllRecipes(id);
     }
 
-//    @GetMapping("/profiles/{id}/posts/{postid}")
-//    public Optional<RecipeDto> getSpecificProfileRecipe(@PathVariable String id, @PathVariable String postid) {
-//       return recipeService.(id, postid);
-//
-//    }
+    @GetMapping("/profiles/{id}/recipes/{recipesId}")
+    public Optional<RecipeDto> getSpecificProfileRecipe(@PathVariable String id, @PathVariable String recipesId) {
+        return recipeService.getSpecificProfileRecipe(id, recipesId);
+    }
 
     @PostMapping("/recipes")
     public void addRecipe(@RequestBody RecipeDto recipeDto) {
@@ -51,4 +50,3 @@ public class RecipeController {
         recipeService.deleteRecipe(id);
     }
 }
-

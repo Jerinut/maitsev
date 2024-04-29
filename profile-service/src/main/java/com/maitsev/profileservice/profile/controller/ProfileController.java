@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.maitsev.profileservice.profile.dto.ProfileDto;
 import com.maitsev.profileservice.profile.service.ProfileService;
+import com.maitsev.recipeservice.recipe.dto.RecipeDto;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,16 +38,6 @@ public class ProfileController {
     @GetMapping("/profiles/{id}")
     public Optional<ProfileDto> getProfile(@PathVariable String id) {
         return profileService.getProfile(id);
-    }
-
-    @GetMapping("/profiles/{id}/posts")
-    public List<PostDto> getProfilePosts(@PathVariable String id) {
-        return profileService.getProfileAllPosts(id);
-    }
-
-    @GetMapping("/profiles/{id}/posts/{postid}")
-    public Optional<PostDto> getSpecificProfilePost(@PathVariable String id, @PathVariable String postid) {
-        return profileService.getSpecificProfilePost(id, postid);
     }
 
     @PostMapping("/profiles")

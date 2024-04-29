@@ -16,6 +16,7 @@ import com.maitsev.postservice.post.model.Post;
 import com.maitsev.profileservice.profile.dto.ProfileDto;
 import com.maitsev.profileservice.profile.model.Profile;
 import com.maitsev.profileservice.profile.repository.ProfileRepository;
+import com.maitsev.recipeservice.recipe.dto.RecipeDto;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;

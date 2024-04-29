@@ -3,6 +3,7 @@ package com.maitsev.reviewservice.Review.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -71,5 +72,49 @@ public class ReviewService {
                 .build();
         reviewRepository.save(review);
         log.info("Post {} is updated", review.getId());
+    }
+
+    public List<ReviewDto> getRecipeAllReviews(String id) {
+        List<ReviewDto> allReviews = webClientBuilder
+                .build()
+                .get()
+                .uri("http://localhost:8002/api/reviews")
+                .retrieve()
+                .bodyToFlux(ReviewDto.class)
+                .collectList()
+                .block();
+
+        return allReviews.stream()
+                .filter(review -> id.equals(review.getRecipeId()))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<ReviewDto> getSpecificRecipeReview(String id, String reviewId) {
+        List<ReviewDto> allReviews = getRecipeAllReviews(id);
+        return allReviews.stream()
+                .filter(review -> review.getId().equals(reviewId))
+                .findFirst();
+    }
+
+    public List<ReviewDto> getProfileAllReviews(String id) {
+        List<ReviewDto> allReviews = webClientBuilder
+                .build()
+                .get()
+                .uri("http://localhost:8002/api/reviews")
+                .retrieve()
+                .bodyToFlux(ReviewDto.class)
+                .collectList()
+                .block();
+
+        return allReviews.stream()
+                .filter(review -> id.equals(review.getPostedBy()))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<ReviewDto> getSpecificProfileReview(String id, String reviewId) {
+        List<ReviewDto> allReviews = getProfileAllReviews(id);
+        return allReviews.stream()
+                .filter(review -> review.getId().equals(reviewId))
+                .findFirst();
     }
 }

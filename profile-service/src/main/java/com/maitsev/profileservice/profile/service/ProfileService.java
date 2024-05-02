@@ -24,13 +24,12 @@ import reactor.core.publisher.Mono;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+
 
 
     @Autowired
@@ -117,15 +116,5 @@ public class ProfileService {
 //    kafka functions
 
 
-    public void sendMessageToOrderTopic(String message){
-        log.info("Message send to order topic: {} ", message);
-        kafkaTemplate.send("orderTopic", message);
-    }
 
-    private final KafkaTemplate<String, Profile> jsonKafkaTemplate;
-
-    public void sendJsonToOrderTopic(Profile profile){
-        log.info("Log message - Send order json object to order topic: {} ", profile.toString());
-        jsonKafkaTemplate.send("orderTopicJson", profile);
-    }
 }

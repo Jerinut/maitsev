@@ -12,9 +12,10 @@ public class KafkaTopicConfiguration {
         return TopicBuilder.name("ProfileUpdateTopic")
                 .build();
     }
-//    @Bean
-//    public NewTopic PaymentTopicCreation(){
-//        return TopicBuilder.name("paymentTopic")
-//                .build();
-//    }
+
+    @Bean
+    public NewTopic ProfileUpdateTopicCreationJson(){
+        return TopicBuilder.name("ProfileUpdateTopicJson")
+                .build();
+    }
 }

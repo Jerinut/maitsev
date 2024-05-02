@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.maitsev.postservice.post.dto.PostDto;
 import com.maitsev.profileservice.profile.model.Profile;
+import com.maitsev.profileservice.profile.service.KafkaProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +31,8 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
+    @Autowired
+    private KafkaProducerService kafkaService;
     @GetMapping("/profiles")
     public List<ProfileDto> getAllProfiles() {
         return profileService.getAllProfiles();
@@ -54,19 +57,6 @@ public class ProfileController {
     public void deleteProfile(@PathVariable String id) {
         profileService.deleteProfile(id);
     }
-
-    @GetMapping("/publish")
-    public ResponseEntity<String> publish(@RequestParam("message") String message){
-        profileService.sendMessageToOrderTopic(message);
-        return ResponseEntity.ok("Message sent to the profile update topic");
-    }
-
-    @PostMapping("/publish")
-    public ResponseEntity<String> publishjson(@RequestBody Profile profile){
-        profileService.sendJsonToOrderTopic(profile);
-        return ResponseEntity.ok("Json order object sent to the profile update topic");
-    }
-
 
 
 }

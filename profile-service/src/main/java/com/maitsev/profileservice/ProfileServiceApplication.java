@@ -23,7 +23,6 @@ public class ProfileServiceApplication {
 	public static void main(String[] args) {
 		DataBaseInitializer.initialize("profile_service_db");
 		SpringApplication.run(ProfileServiceApplication.class, args);
-
 	}
 
 }

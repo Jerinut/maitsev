@@ -17,6 +17,6 @@ public class KafkaTopicConsumerService {
 
     @KafkaListener(topics = "ProfileUpdateTopicJson", groupId = "ProfileUpdateEventGroup" )
     public void consume(ProfileDto profile){
-        log.info("Log message recieved from order topic: {} ", profile.toString());
+        log.info("Log message recieved from profile topic: {} ", profile.toString());
     }
 }

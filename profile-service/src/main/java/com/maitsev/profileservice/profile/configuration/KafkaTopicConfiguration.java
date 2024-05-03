@@ -6,7 +6,6 @@ import org.springframework.kafka.config.TopicBuilder;
 
 @Configuration
 public class KafkaTopicConfiguration {
-
     @Bean
     public NewTopic ProfileUpdateTopic(){
         return TopicBuilder.name("ProfileUpdateTopic")

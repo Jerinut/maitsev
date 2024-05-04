@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.maitsev.chatservice.chat.dto.MessageDto;
+import com.maitsev.chatservice.chat.model.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +27,7 @@ public class ChatController {
   private ChatService chatService;
 
   @GetMapping("/chats")
-  public List<ChatDto> getAllChats() {
+  public Iterable<Chat> getAllChats() {
     return chatService.getAllChats();
   }
 

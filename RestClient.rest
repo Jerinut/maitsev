@@ -308,4 +308,7 @@ DELETE http://localhost:8005/api/chats/01/messages/001
 # Testing Content Personalization Service
 
 ### Get personalized posts
-GET http://localhost:8007/api/for-you/01
+GET http://localhost:8007/api/for-you/posts/01
+
+### Get personalized recipes
+GET http://localhost:8007/api/for-you/recipes/01

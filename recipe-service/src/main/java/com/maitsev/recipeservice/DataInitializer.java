@@ -15,10 +15,10 @@ public class DataInitializer {
         return args -> {
             Recipe recipe1 = new Recipe();
             List<String> ingredients = new ArrayList<>();
-               ingredients.add("pasta");
-               ingredients.add("cheese");
-               ingredients.add("milk");
-               ingredients.add("tomato sauce");
+               ingredients.add("Pasta");
+               ingredients.add("Cheese");
+               ingredients.add("Milk");
+               ingredients.add("Tomato sauce");
 
              recipe1.setId("01");
             recipe1.setIngredients(ingredients);

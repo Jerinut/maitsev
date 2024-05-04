@@ -303,3 +303,9 @@ content-type: application/json
 
 ### Delete a message in a chat
 DELETE http://localhost:8005/api/chats/01/messages/001
+
+
+# Testing Content Personalization Service
+
+### Get personalized posts
+GET http://localhost:8007/api/for-you/01

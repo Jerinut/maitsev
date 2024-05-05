@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private KafkaTemplate<String, Review> reviewJsonKafkaTemplate;
 
     @Autowired
     private WebClient.Builder webClientBuilder;
@@ -41,15 +44,18 @@ public class ReviewService {
     }
 
     public void addReview(ReviewDto reviewDto) {
-        Review review = Review.builder()
-                .id(reviewDto.getId())
-                .recipeId(reviewDto.getRecipeId())
-                .createdAt(reviewDto.getCreatedAt())
-                .postedBy(reviewDto.getPostedBy())
-                .score(reviewDto.getScore())
-                .build();
+
+        Review review = new Review();
+        review.setId(reviewDto.getId());
+        review.setRecipeId(reviewDto.getRecipeId());
+        review.setCreatedAt(reviewDto.getCreatedAt());
+        review.setPostedBy(reviewDto.getPostedBy());
+        review.setScore(reviewDto.getScore());
+
         reviewRepository.save(review);
         log.info("Review {} is added to the Database", review.getId());
+        reviewJsonKafkaTemplate.send("reviewTopicJson", review);
+
     }
 
     public Optional<ReviewDto> getReview(String id) {

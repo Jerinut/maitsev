@@ -30,9 +30,9 @@ public class NotificationService {
   public List<NotificationDto> getAllNotification() {
     List<Notification> notifications = new ArrayList<>();
     notificationRepository.findAll().forEach(notifications::add);
-    return notifications.stream().map(this::mapToNOtificationDto).toList();
+    return notifications.stream().map(this::mapToNotificationDto).toList();
   }
-  private NotificationDto mapToNOtificationDto(Notification notification) {
+  private NotificationDto mapToNotificationDto(Notification notification) {
     return NotificationDto.builder()
             .id(notification.getId())
             .message(notification.getMessage())
@@ -53,7 +53,7 @@ public class NotificationService {
 
   public Optional <NotificationDto> getNotification(String id) {
     Optional <Notification> notification = notificationRepository.findById(id);
-    return notification.map(this::mapToNOtificationDto);
+    return notification.map(this::mapToNotificationDto);
   }
 
   public void deleteNotification(String id) {
@@ -120,5 +120,11 @@ public class NotificationService {
 
     // Save notification to the repository
     notificationRepository.save(notificationUser1);
+  }
+  public List<NotificationDto> getNotificationsForUser(String userId) {
+    List<Notification> notifications = notificationRepository.findByUserId(userId);
+    return notifications.stream()
+            .map(this::mapToNotificationDto)
+            .collect(Collectors.toList());
   }
 }

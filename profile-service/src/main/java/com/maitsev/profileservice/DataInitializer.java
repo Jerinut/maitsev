@@ -19,7 +19,7 @@ public class DataInitializer {
             profile1.setPassword("1234");
             profile1.setUsername("jerin");
             profile1.setBio("Bio for jerin");
-            profile1.setCuisines(Arrays.asList("Italian", "Mexican"));
+            profile1.setCuisines(Arrays.asList("Italian", "Mexican", "Vegan"));
             profile1.setLikedIngredients(Arrays.asList("Cheese", "Tomato"));
             profile1.setDislikedIngredients(Arrays.asList("Onion", "Garlic"));
 

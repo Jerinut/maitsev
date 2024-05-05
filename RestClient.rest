@@ -251,9 +251,9 @@ POST  http://localhost:8005/api/chats HTTP/1.1
 content-type: application/json
 
 {
-  "id": "02",
-  "user1Id": "01",
-  "user2Id": "02",
+  "id": "14",
+  "user1Id": "15",
+  "user2Id": "16",
   "createdAt": "2024-04-28"
 }
 ### Update a chat
@@ -274,16 +274,16 @@ DELETE    http://localhost:8005/api/chats/01
 GET http://localhost:8005/api/chats/01/messages
 
 ### Get Specific message in a chat
-GET http://localhost:8005/api/chats/01/messages/01
+GET http://localhost:8005/api/chats/01/messages/03
 
 ### Add a message to a chat
 POST http://localhost:8005/api/chats/01/messages HTTP/1.1
 content-type: application/json
 
 {
-  "id": "01",
-  "sender": "user1Id",
-  "receiver": "user2Id",
+  "id": "08",
+  "sender": "me",
+  "receiver": "you",
   "content": "Hello, how are you?",
   "createdAt": "2024-04-28"
 }
@@ -312,3 +312,20 @@ GET http://localhost:8007/api/for-you/posts/01
 
 ### Get personalized recipes
 GET http://localhost:8007/api/for-you/recipes/01
+
+
+#Testing notification Service
+
+### Get All notifications
+GET http://localhost:8006/api/notifications
+
+### Add a notification
+POST  http://localhost:8006s/api/notifications HTTP/1.1
+content-type: application/json
+
+{
+  "id": "05",
+  "status": "new",
+  "userId": "02",
+  "message": "i am your new message"
+}

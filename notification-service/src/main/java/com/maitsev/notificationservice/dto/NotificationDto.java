@@ -15,5 +15,6 @@ public class NotificationDto {
     @Id
     private String id;
     private String status;
+    private String userId;
     private String message;
 }

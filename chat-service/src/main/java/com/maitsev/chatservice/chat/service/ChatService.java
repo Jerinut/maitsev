@@ -8,6 +8,7 @@ import com.maitsev.chatservice.chat.dto.MessageDto;
 import com.maitsev.chatservice.chat.repository.MessageRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -30,7 +31,12 @@ public class ChatService {
   @Autowired
   private MessageRepository messageRepository;
 
-  public Iterable<Chat> getAllChats() {
+  public ChatService(KafkaTemplate<String, Chat> jsonKafkaTemplate, KafkaTemplate<String, Message> messageJsonKafkaTemplate) {
+    this.jsonKafkaTemplate = jsonKafkaTemplate;
+    this.messageJsonKafkaTemplate = messageJsonKafkaTemplate;
+  }
+
+    public Iterable<Chat> getAllChats() {
     return chatRepository.findAll();
   }
 
@@ -43,6 +49,7 @@ public class ChatService {
         .createdAt(chat.getCreatedAt())
         .build();
   }
+  private final KafkaTemplate<String, Chat> jsonKafkaTemplate;
 
   public void addChat(ChatDto chatDto) {
     Chat chat = Chat.builder()
@@ -52,6 +59,7 @@ public class ChatService {
         .messages(chatDto.getMessages())
         .createdAt(chatDto.getCreatedAt())
         .build();
+    jsonKafkaTemplate.send("chatTopicJson", chat);
     chatRepository.save(chat);
     log.info("Chat {} is added to the Database", chat.getId());
   }
@@ -85,6 +93,9 @@ public class ChatService {
     log.info("Chat {} is updated", chat.getId());
   }
 
+  private final KafkaTemplate<String, Message> messageJsonKafkaTemplate;
+
+
   public void addMessageToChat(String chatId, MessageDto messageDto) {
     Chat chat = chatRepository.findById(chatId)
         .orElseThrow(() -> new EntityNotFoundException("Chat not found with id: " + chatId));
@@ -97,7 +108,9 @@ public class ChatService {
     message.setReceiver(messageDto.getReceiver());
     message.setCreatedAt(messageDto.getCreatedAt());
 
+    messageJsonKafkaTemplate.send("messageTopicJson", message);
     messageRepository.save(message);
+
   }
 
   private MessageDto mapToMessageDto(Message message) {
@@ -166,3 +179,5 @@ public class ChatService {
     });
   }
 }
+
+

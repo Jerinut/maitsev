@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.maitsev.chatservice.chat.dto.MessageDto;
 import com.maitsev.chatservice.chat.model.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maitsev.chatservice.chat.dto.ChatDto;
@@ -37,8 +38,8 @@ public class ChatController {
   }
 
   @PostMapping("/chats")
-  public void addChat(@RequestBody ChatDto chatDto) {
-    chatService.addChat(chatDto);
+  public void addChat(@RequestBody ChatDto chatDto){
+     chatService.addChat(chatDto);
   }
 
   @PutMapping("/chats/{id}")

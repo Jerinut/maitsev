@@ -1,4 +1,4 @@
-package com.maitsev.chatservice.chat.model;
+package com.maitsev.notificationservice.model;
 
 import java.time.LocalDate;
 import java.util.List;

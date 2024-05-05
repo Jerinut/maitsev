@@ -21,6 +21,6 @@ public class Notification {
     @Id
     private String id;
     private String status;
-
+    private String userId;
     private String message;
 }

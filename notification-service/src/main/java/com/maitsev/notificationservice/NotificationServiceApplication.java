@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class NotificationServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NotificationServiceApplication.class, args);
+
+		DatabaseInitializer.initialize("notification_service_db");
+		SpringApplication.run(
+				NotificationServiceApplication.class, args);
 	}
 
 }

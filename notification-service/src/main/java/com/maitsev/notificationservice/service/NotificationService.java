@@ -30,7 +30,9 @@ public class NotificationService {
   }
   private NotificationDto mapToNOtificationDto(Notification notification) {
     return NotificationDto.builder()
-
+            .id(notification.getId())
+            .message(notification.getMessage())
+            .status(notification.getStatus())
             .build();
   }
 

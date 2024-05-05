@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -26,6 +28,9 @@ public class ProfileService {
 
     @Autowired
     private ProfileRepository profileRepository;
+
+
+
 
     @Autowired
     private WebClient.Builder webClientBuilder;
@@ -85,5 +90,31 @@ public class ProfileService {
         profileRepository.save(profile);
         log.info("Profile {} is updated", profile.getId());
     }
+
+    public List<PostDto> getProfileAllPosts(String id) {
+        List<PostDto> allPosts = webClientBuilder
+                .build()
+                .get()
+                .uri("http://localhost:8001/api/posts")
+                .retrieve()
+                .bodyToFlux(PostDto.class)
+                .collectList()
+                .block();
+
+        return allPosts.stream()
+                .filter(post -> id.equals(post.getPostedById()))
+                .collect(Collectors.toList());
+    }
+
+    public Optional<PostDto> getSpecificProfilePost(String id, String postId) {
+        List<PostDto> allPosts = getProfileAllPosts(id);
+        return allPosts.stream()
+                .filter(post -> post.getId().equals(postId))
+                .findFirst();
+    }
+
+//    kafka functions
+
+
 
 }

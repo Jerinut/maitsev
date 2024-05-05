@@ -75,4 +75,5 @@ public class ChatController {
   public void deleteMessageInChat(@PathVariable String chatId, @PathVariable Long messageId) {
     chatService.deleteMessageInChat(chatId, messageId);
   }
+
 }

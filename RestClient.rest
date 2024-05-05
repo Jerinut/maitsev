@@ -129,10 +129,10 @@ POST http://localhost:8002/api/reviews HTTP/1.1
 Content-Type: application/json
 
 {
-    "id": "02",
+    "id": "07",
     "recipeId": "01",
     "createdAt": "2024-03-17",
-    "postedBy": "02",
+    "postedBy": "20",
     "score": 5.7
 }
 
@@ -331,7 +331,7 @@ content-type: application/json
 }
 
 ### Get All notifications for specific user
-GET http://localhost:8006/api/notifications/user/03
+GET http://localhost:8006/api/notifications/user/20
 
 ### Delete a notification
 DELETE http://localhost:8006/api/notifications/03

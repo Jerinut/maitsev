@@ -123,22 +123,22 @@ public class NotificationService {
     notificationRepository.save(notificationUser1);
   }
 
-  @KafkaListener(topics = "reviewTopicJson", groupId = "reviewEventGroup")
+  @KafkaListener(topics = "reviewTopicJson", groupId = "chatEventGroupForChat")
   public void consumes(Review review) {
     log.info("Log message recieved from review topic: {} ", review.toString());
-    // String receiverId = message.getReceiver();
+     String postedBy = review.getPostedBy();
 
     // Create notifications for receiver
-    /*
-     * Notification notificationUser1 = Notification.builder()
-     * .id(UUID.randomUUID().toString())
-     * .status("NEW MESSAGE")
-     * .userId(receiverId)
-     * .message("just new message")
-     * .build();
-     */
+
+     Notification notificationUser1 = Notification.builder()
+      .id(UUID.randomUUID().toString())
+      .status("NEW REVIEW")
+      .userId(postedBy)
+      .message("just new review")
+      .build();
+
     // Save notification to the repository
-    // notificationRepository.save(notificationUser1);
+     notificationRepository.save(notificationUser1);
   }
 
   public List<NotificationDto> getNotificationsForUser(String userId) {

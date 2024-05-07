@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,15 +33,17 @@ public class PostService {
   }
 
   private PostDto mapToPostDto(Post post) {
-    return PostDto.builder()
+    PostDto postDto = PostDto.builder()
         .id(post.getId())
         .description(post.getDescription())
         .imgUrl(post.getImgUrl())
         .likes(post.getLikes())
         .createdAt(post.getCreatedAt())
+
         .postedById(post.getPostedById())
-        .tags(post.getTags())
         .build();
+    Hibernate.initialize(postDto.getTags());
+    return postDto;
   }
 
   public void addPost(PostDto postDto) {

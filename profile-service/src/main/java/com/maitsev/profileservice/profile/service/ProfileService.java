@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -42,15 +43,15 @@ public class ProfileService {
     }
 
     private ProfileDto mapToProfileDto(Profile profile) {
-        return ProfileDto.builder()
+        ProfileDto profileDto =  ProfileDto.builder()
                 .id(profile.getId())
                 .username(profile.getUsername())
                 .password(profile.getPassword())
                 .bio(profile.getBio())
-                .cuisines(profile.getCuisines())
                 .likedIngredients(profile.getLikedIngredients())
                 .dislikedIngredients(profile.getDislikedIngredients())
                 .build();
+        Hibernate.initialize(profileDto);
     }
 
     public void addProfile(ProfileDto profileDto) {

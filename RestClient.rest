@@ -2,7 +2,6 @@
 
 ### Get All profiles
 GET http://localhost:8000/api/profiles
-
 ### Get Specific profile
 GET http://localhost:8000/api/profiles/01
 
@@ -51,10 +50,10 @@ POST http://localhost:8001/api/posts HTTP/1.1
 Content-Type: application/json
 
 {
-    "id": "02",
+    "id": "05",
     "description": "Example Description",
     "imgUrl": "image2.jpg",
-    "likes": 0,
+    "likes": 3,
     "createdAt": "2024-03-17",
     "postedById": "02",
     "tags": ["Vegan", "Gluten-free"]
@@ -100,6 +99,8 @@ Content-Type: application/json
 
 ### Get a specific comment on a specific post
 GET http://localhost:8001/api/posts/01/comments/03 HTTP/1.1
+### api gateway
+GET http://localhost:8080/api/posts/01/comments/03 HTTP/1.1
 
 ### Update a specific comment on a specific post
 PUT http://localhost:8001/api/posts/01/comments/03 HTTP/1.1

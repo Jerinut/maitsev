@@ -237,6 +237,9 @@ GET http://localhost:8080/api/recipes
 ### Get all reviews
 GET http://localhost:8080/api/reviews
 
+### Get all chats
+GET http://localhost:8080/api/chats
+
 
 #Testing chat service
 

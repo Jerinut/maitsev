@@ -2,8 +2,11 @@ package com.maitsev.profileservice.profile.model;
 
 import java.util.List;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,6 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Profile {
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String username;
     private String password;

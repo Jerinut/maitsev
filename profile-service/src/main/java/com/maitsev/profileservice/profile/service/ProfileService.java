@@ -55,7 +55,7 @@ public class ProfileService {
 
     public void addProfile(ProfileDto profileDto) {
         Profile profile = Profile.builder()
-                .id(profileDto.getId())
+                //.id(profileDto.getId())
                 .username(profileDto.getUsername())
                 .password(profileDto.getPassword())
                 .bio(profileDto.getBio())
@@ -79,7 +79,7 @@ public class ProfileService {
 
     public void updateProfile(String id, ProfileDto profileDto) {
         Profile profile = Profile.builder()
-                .id(profileDto.getId())
+                //.id(profileDto.getId())
                 .username(profileDto.getUsername())
                 .password(profileDto.getPassword())
                 .bio(profileDto.getBio())

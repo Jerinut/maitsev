@@ -5,7 +5,7 @@ import Others from "@/views/Others.vue";
 import Recipes from "@/views/Recipes.vue";
 import Posts from "@/views/Posts.vue";
 import Chat from "@/views/Chat.vue";
-import MyProfile from "@/views/MyProfile.vue";
+import Profile from "@/views/Profile.vue";
 import Register from "@/views/Register.vue";
 
 
@@ -37,9 +37,10 @@ const routes = [
         component: Chat,
     },
     {
-        path: "/my-profile",
-        name: MyProfile,
-        component: MyProfile,
+        path: "/profile/:id",
+        name: Profile,
+        component: Profile,
+        props: true  // Enables route params to be passed as props to the component
     },
     {
         path: "/register",

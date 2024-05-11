@@ -15,7 +15,7 @@ public class DataInitializer {
     public CommandLineRunner loadProductsData(ProfileRepository profileRepository) {
         return args -> {
             Profile profile1 = new Profile();
-            //profile1.setId("01");
+            profile1.setId("e3cf4b4b-a57b-41ba-a19e-355b75f90a2e");
             profile1.setPassword("1234");
             profile1.setUsername("jerin");
             profile1.setBio("Bio for jerin");
@@ -33,7 +33,7 @@ public class DataInitializer {
             profile2.setLikedIngredients(Arrays.asList("Chicken", "Rice"));
             profile2.setDislikedIngredients(Arrays.asList("Fish", "Egg"));
             
-            // profileRepository.save(profile1);
+            profileRepository.save(profile1);
             // profileRepository.save(profile2);
 
         };

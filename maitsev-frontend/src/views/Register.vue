@@ -78,9 +78,24 @@ export default {
     };
   },
   methods: {
-    async handleSubmit() {
-      console.log(this.form)
-      // Add logic to handle form submission (e.g., sending data to backend)
+    handleSubmit() {
+      const apiUrl = 'http://localhost:8000/api/profiles';
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.form)
+      })
+      .then(() => {
+        // Redirect or perform any follow-up actions immediately after sending the data
+        console.log('Form submitted');
+        this.$router.push("/api/profiles"); // Adjust the path as needed
+      })
+      .catch(error => {
+        console.error('Failed to submit form:', error);
+        this.errorMessage = 'Submission failed';
+      });
     }
   }
 };

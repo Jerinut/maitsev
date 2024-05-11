@@ -29,7 +29,7 @@
               <img class="user-menu-img" src="../assets/user-menu.png" alt="User Menu">
             </button>
             <div v-if="showDropdown" class="dropdown-content">
-              <router-link to="/my-profile" class="navbar-item">My Profile</router-link>
+              <router-link to="/profile/e3cf4b4b-a57b-41ba-a19e-355b75f90a2e" class="navbar-item">My Profile</router-link>
               <button class="dropbtn" @click="logout">Logout</button>
             </div>
           </nav>

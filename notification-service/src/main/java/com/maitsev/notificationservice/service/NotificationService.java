@@ -6,6 +6,8 @@ import com.maitsev.notificationservice.model.Message;
 import com.maitsev.notificationservice.model.Notification;
 import com.maitsev.notificationservice.model.Review;
 import com.maitsev.notificationservice.repository.NotificationRepository;
+import com.maitsev.recipeservice.recipe.dto.RecipeDto;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,22 +125,47 @@ public class NotificationService {
     notificationRepository.save(notificationUser1);
   }
 
+  public List<RecipeDto> getProfileAllRecipes() {
+    List<RecipeDto> allRecipes = webClientBuilder
+        .build()
+        .get()
+        .uri("http://localhost:8003/api/recipes")
+        .retrieve()
+        .bodyToFlux(RecipeDto.class)
+        .collectList()
+        .block();
+
+    return allRecipes;
+  }
+
+  public Optional<RecipeDto> getSpecificProfileRecipe(String recipeId) {
+    List<RecipeDto> allRecipes = getProfileAllRecipes();
+    return allRecipes.stream()
+        .filter(recipe -> recipe.getId().equals(recipeId))
+        .findFirst();
+  }
+
   @KafkaListener(topics = "reviewTopicJson", groupId = "chatEventGroupForChat")
   public void consumes(Review review) {
     log.info("Log message recieved from review topic: {} ", review.toString());
-     String postedBy = review.getPostedBy();
 
-    // Create notifications for receiver
+    Optional<RecipeDto> recipeDto = getSpecificProfileRecipe(review.getRecipeId());
+    if (recipeDto.isPresent()) {
+      RecipeDto recipe = recipeDto.get();
+      String userId = recipe.getPostedById();
 
-     Notification notificationUser1 = Notification.builder()
-      .id(UUID.randomUUID().toString())
-      .status("NEW REVIEW")
-      .userId(postedBy)
-      .message("just new review")
-      .build();
+      Notification notification = Notification.builder()
+          .id(UUID.randomUUID().toString())
+          .status("NEW REVIEW")
+          .userId(userId)
+          .message("User " + review.getPostedBy() + " added a review of " + review.getScore() + " to recipe "
+              + review.getRecipeId())
+          .build();
 
-    // Save notification to the repository
-     notificationRepository.save(notificationUser1);
+      notificationRepository.save(notification);
+    } else {
+      log.info("Error creating the notification as the corresponding recipe doesn't exist: ");
+    }
   }
 
   public List<NotificationDto> getNotificationsForUser(String userId) {

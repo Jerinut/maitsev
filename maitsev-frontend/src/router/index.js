@@ -7,6 +7,8 @@ import Posts from "@/views/Posts.vue";
 import Chat from "@/views/Chat.vue";
 import Profile from "@/views/Profile.vue";
 import Register from "@/views/Register.vue";
+import AddPost from "@/components/AddPost.vue";
+import APost from '@/components/APost.vue';
 
 
 
@@ -22,6 +24,17 @@ const routes = [
         component: Posts,
     },
     {
+        path: "/posts/:id",
+        name: APost,
+        component: APost,
+        props: true  // Enables route params to be passed as props to the component
+    },
+    {
+        path: '/posts/addpost',
+        name: AddPost,
+        component: AddPost,
+    },
+    {
         path: '/recipes',
         name: Recipes,
         component: Recipes,
@@ -33,6 +46,11 @@ const routes = [
     },
     {
         path: "/chat",
+        name: Chat,
+        component: Chat,
+    },
+    {
+        path: "/chat/:id",
         name: Chat,
         component: Chat,
     },

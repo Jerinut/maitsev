@@ -4,6 +4,7 @@ package com.maitsev.chatservice;
 import com.maitsev.chatservice.chat.model.Message;
 import com.maitsev.chatservice.chat.repository.ChatRepository;
 import com.maitsev.chatservice.chat.model.Chat;
+import com.maitsev.chatservice.chat.repository.MessageRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 @Configuration
 public class DataInitializer {
     @Bean
-    public CommandLineRunner initializeChatAndMessageData(ChatRepository chatRepository) {
+    public CommandLineRunner initializeChatAndMessageData(ChatRepository chatRepository, MessageRepository messageRepository) {
         return args -> {
             Chat chat1 = new Chat();
             chat1.setId("01");
@@ -24,12 +25,9 @@ public class DataInitializer {
 
             Message message1 = new Message();
             message1.setContent("Hello, how are you?");
-            // Remove manual ID assignment for the Message entity
-            // message1.setId("01");
             message1.setSender("01");
             message1.setReceiver("02");
             message1.setCreatedAt(LocalDate.now());
-            // Set the Chat entity to the Message entity's chat field
             message1.setChat(chat1);
 
             // Initialize the list of messages in the Chat entity

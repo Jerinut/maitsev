@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.maitsev.chatservice.chat.dto.MessageDto;
 import com.maitsev.chatservice.chat.model.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,16 +26,21 @@ public class ChatController {
     return chatService.getAllChats();
   }
 
+  @GetMapping("/chats/user/{id}")
+  public Iterable<ChatDto> getChatsForUser(@PathVariable String id) {
+    return chatService.getChatsForUser(id);
+  }
+
   @GetMapping("/chats/{id}")
   public Optional<ChatDto> getChat(@PathVariable String id) {
     return chatService.getChat(id);
   }
 
   @PostMapping("/chats")
-  public void addChat(@RequestBody ChatDto chatDto){
-     chatService.addChat(chatDto);
+  public ResponseEntity<Chat> addChat(@RequestBody ChatDto chatDto){
+    Chat savedChat = chatService.addChat(chatDto);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedChat);
   }
-
   @PutMapping("/chats/{id}")
   public void updateChat(@RequestBody ChatDto chatDto, @PathVariable String id) {
     chatService.updateChat(id, chatDto);

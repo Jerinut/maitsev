@@ -23,19 +23,37 @@ public class DataInitializer {
             profile1.setLikedIngredients(Arrays.asList("Cheese", "Tomato"));
             profile1.setDislikedIngredients(Arrays.asList("Onion", "Garlic"));
 
-            
             Profile profile2 = new Profile();
-            //profile2.setId("02");
+            profile2.setId("01");
             profile2.setPassword("1234");
             profile2.setUsername("kasper");
             profile2.setBio("Bio for kasper");
             profile2.setCuisines(Arrays.asList("Chinese", "Indian"));
             profile2.setLikedIngredients(Arrays.asList("Chicken", "Rice"));
             profile2.setDislikedIngredients(Arrays.asList("Fish", "Egg"));
+
+            Profile profile3 = new Profile();
+            profile3.setId("02");
+            profile3.setPassword("12345");
+            profile3.setUsername("fidan");
+            profile3.setBio("Bio for fidan");
+            profile3.setCuisines(Arrays.asList("Chinese", "Indian"));
+            profile3.setLikedIngredients(Arrays.asList("Potato", "Rice"));
+            profile3.setDislikedIngredients(Arrays.asList("Fish", "Chicken"));
+
+            Profile profile4 = new Profile();
+            profile4.setId("03");
+            profile4.setPassword("123455");
+            profile4.setUsername("henri");
+            profile4.setBio("Bio for henri");
+            profile4.setCuisines(Arrays.asList("Chinese", "Mexican"));
+            profile4.setLikedIngredients(Arrays.asList("Rocca", "Cheese", "Tomato"));
+            profile4.setDislikedIngredients(Arrays.asList("Egg", "Onion"));
             
             profileRepository.save(profile1);
-            // profileRepository.save(profile2);
-
+            profileRepository.save(profile2);
+            profileRepository.save(profile3);
+            profileRepository.save(profile4);
         };
     }
 }

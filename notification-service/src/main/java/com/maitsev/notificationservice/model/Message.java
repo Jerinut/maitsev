@@ -1,13 +1,16 @@
 package com.maitsev.notificationservice.model;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
+import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "messagetable")
@@ -17,6 +20,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Message {
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String sender;
     private String receiver;

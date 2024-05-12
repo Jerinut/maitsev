@@ -50,6 +50,11 @@ const routes = [
         component: Chat,
     },
     {
+        path: "/chat/:id",
+        name: Chat,
+        component: Chat,
+    },
+    {
         path: "/profile/:id",
         name: Profile,
         component: Profile,

@@ -2,14 +2,14 @@ package com.maitsev.notificationservice.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.GeneratedValue;
 
 @Entity
 @Table(name = "chattable")
@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Chat {
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String user1Id;
     private String user2Id;
@@ -26,5 +28,3 @@ public class Chat {
     private List<Message> messages;
     private LocalDate createdAt;
 }
-
-

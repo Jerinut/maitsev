@@ -23,9 +23,8 @@ public class DataInitializer {
             profile1.setLikedIngredients(Arrays.asList("Cheese", "Tomato"));
             profile1.setDislikedIngredients(Arrays.asList("Onion", "Garlic"));
 
-            
             Profile profile2 = new Profile();
-            profile2.setId("02");
+            profile2.setId("01");
             profile2.setPassword("1234");
             profile2.setUsername("kasper");
             profile2.setBio("Bio for kasper");

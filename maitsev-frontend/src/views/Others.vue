@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       profiles: [],
-      currentProfileId: 'e3cf4b4b-a57b-41ba-a19e-355b75f90a2e'  // Placeholder
+      currentProfileId: 'a9de8419-207c-4eb3-b0eb-bf400d59fc7f'  // Placeholder
     };
   },
   created() {
@@ -30,15 +30,31 @@ export default {
         })
         .catch(error => console.error('Error fetching profiles:', error));
     },
-    startChat(profileId) {
-      fetch(`http://localhost:8000/api/chats/${profileId}`, {
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then(chat => {
-        this.$router.push(`/chat/${chat.id}`);
-      })
-      .catch(error => console.error('Error starting chat:', error));
+    async startChat(profileId) {
+      const response = await fetch(`http://localhost:8005/api/chats/user/${this.currentProfileId}`);
+      let responseJson = await response.json();
+      if(responseJson[0].user1Id === profileId || responseJson[0].user2Id === profileId){
+        this.$router.push(`/chat/${responseJson[0].id}`)
+      }else{
+        let newChat ={
+          user1Id: this.currentProfileId,
+          user2Id: profileId,
+          createdAt:new Date().toISOString(),
+        }
+        const response = await fetch(`http://localhost:8005/api/chats`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newChat)
+        });
+        if (response.ok) {
+          const responseData = await response.json();
+          this.$router.push(`/chat/${responseData.id}`)
+        } else {
+          console.error('Failed to send message:', response.statusText);
+        }
+      }
     }
   }
 };

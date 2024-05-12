@@ -36,7 +36,7 @@ public class ChatService {
     this.messageJsonKafkaTemplate = messageJsonKafkaTemplate;
   }
 
-    public Iterable<Chat> getAllChats() {
+  public Iterable<Chat> getAllChats() {
     return chatRepository.findAll();
   }
 
@@ -51,22 +51,28 @@ public class ChatService {
   }
   private final KafkaTemplate<String, Chat> jsonKafkaTemplate;
 
-  public void addChat(ChatDto chatDto) {
+  public Chat addChat(ChatDto chatDto) {
     Chat chat = Chat.builder()
-        .id(chatDto.getId())
         .user1Id(chatDto.getUser1Id())
         .user2Id(chatDto.getUser2Id())
         .messages(chatDto.getMessages())
         .createdAt(chatDto.getCreatedAt())
         .build();
     jsonKafkaTemplate.send("chatTopicJson", chat);
-    chatRepository.save(chat);
-    log.info("Chat {} is added to the Database", chat.getId());
+
+    return chatRepository.save(chat);
   }
 
   public Optional<ChatDto> getChat(String id) {
     Optional<Chat> chat = chatRepository.findById(id);
     return chat.map(this::mapToChatDto);
+  }
+
+  public List<ChatDto> getChatsForUser(String userId) {
+    List<Chat> chats = chatRepository.findByUser1IdOrUser2Id(userId);
+    return chats.stream()
+            .map(this::mapToChatDto)
+            .collect(Collectors.toList());
   }
 
   public void deleteChat(String id) {

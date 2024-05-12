@@ -54,7 +54,7 @@ export default {
       selectedChat: null,
       messages: [],
       newMessage: '',
-      userId: 'a9de8419-207c-4eb3-b0eb-bf400d59fc7f' // Replace with actual user id
+      userId: '01' // Replace with actual user id
     };
   },
   computed: {

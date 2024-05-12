@@ -15,7 +15,7 @@ export default {
   data() {
     return {
       profiles: [],
-      currentProfileId: 'a9de8419-207c-4eb3-b0eb-bf400d59fc7f'  // Placeholder
+      currentProfileId: '01'  // Placeholder
     };
   },
   created() {

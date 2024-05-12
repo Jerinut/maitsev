@@ -56,7 +56,7 @@ export default {
     return {
       isAuthorized: true,
       notifications: [],
-      userId: "02" //Placeholder
+      userId: "01" //Placeholder
     }
   },
   created() {

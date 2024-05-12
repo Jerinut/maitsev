@@ -56,7 +56,7 @@ export default {
       cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian'],
       likedIngredients: ['Salt', 'Sugar', 'Pepper', 'Tomato'],
       dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive', 'Onion', 'Garlic'],
-      currentProfileId: '02' // Replace 'default-own-id' with logic to get the current user's ID
+      currentProfileId: '01' // Replace 'default-own-id' with logic to get the current user's ID
     };
   },
   computed: {
@@ -72,7 +72,7 @@ export default {
         .then(response => response.json())
         .then(data => {
           this.profile = data;
-          this.isOwnProfile = (id === '02'); // Logic to determine if it's the current user's profile
+          this.isOwnProfile = (id === this.currentProfileId); // Logic to determine if it's the current user's profile
         })
         .catch(err => console.error('Failed to fetch profile:', err.message));
     },

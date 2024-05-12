@@ -23,7 +23,6 @@
     created() {
       // Fetch notifications when component is created
       // Replace 'fetchNotifications' with your actual method
-      this.recipes = this.fetchRecipes();
     },
     methods: {
       fetchRecipes() {

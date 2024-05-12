@@ -2,3 +2,10 @@
 .vscode/
 .gitignore
 target
+.matisev-frontend/node_modules
+node_modules
+# Log files
+.matisev-frontend/npm-debug.log*
+.matisev-frontend/yarn-debug.log*
+.matisev-frontend/yarn-error.log*
+.matisev-frontend/pnpm-debug.log*

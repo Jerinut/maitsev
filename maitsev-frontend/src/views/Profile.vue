@@ -56,7 +56,7 @@ export default {
       cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian'],
       likedIngredients: ['Salt', 'Sugar', 'Pepper', 'Tomato'],
       dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive', 'Onion', 'Garlic'],
-      currentProfileId: 'a9de8419-207c-4eb3-b0eb-bf400d59fc7f' // Replace 'default-own-id' with logic to get the current user's ID
+      currentProfileId: '02' // Replace 'default-own-id' with logic to get the current user's ID
     };
   },
   computed: {
@@ -67,13 +67,12 @@ export default {
   },
   methods: {
     fetchProfile() {
-      const id = this.currentProfileId; // Now using dynamic ID
+      const id = this.$route.params.id // Now using dynamic ID
       fetch(`http://localhost:8000/api/profiles/${id}`)
         .then(response => response.json())
         .then(data => {
           this.profile = data;
-          console.log(data)
-          this.isOwnProfile = (id === 'default-own-id'); // Logic to determine if it's the current user's profile
+          this.isOwnProfile = (id === '02'); // Logic to determine if it's the current user's profile
         })
         .catch(err => console.error('Failed to fetch profile:', err.message));
     },
@@ -98,9 +97,15 @@ export default {
         });
     }
   },
-
+  watch: {
+    '$route.params.id': function(newId) {
+      if (newId) {
+        this.fetchProfile(newId);  // Call fetchProfile whenever the ID in the URL changes
+      }
+    }
+  },
   mounted() {
-    this.fetchProfile();
+    this.fetchProfile(this.currentProfileId);
   },
 };
 </script>

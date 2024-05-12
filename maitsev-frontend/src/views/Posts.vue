@@ -4,28 +4,63 @@
       <div class="heading">
         <h2>All Posts</h2>
         <a href="/posts/addpost">
-          <h1 >Add a post</h1>
+          <h1>Add a post</h1>
         </a>
       </div>
-      
+
       <ul>
         <div class="item" v-for="post in posts" :key="post.id">
           <a class="singlepost" :href="'/posts/' + post.id">
-            <span class="info"> <b>Posted By:</b> {{ post.postedBy }} </span><br />
+            <span class="info"> <b>Posted By:</b> {{ post.postedBy }} </span
+            ><br />
             <span class="info"> <b>Likes:</b> {{ post.likes }} </span><br />
+            <span class="info"> <b>Created At:</b> {{ post.createdAt }} </span
+            ><br />
             <span class="info">
-              <b>Created At:</b> {{ post.createdAt }} 
-            </span><br />
-            <span class="info">
-              <b>Description:</b> {{ post.description }} 
-            </span><br />
-            <img class="postImage" :src="require('@/assets/maitsev-logo.png')" alt="Post Image" />
+              <b>Description:</b> {{ post.description }} </span
+            ><br />
+            <img
+              class="postImage"
+              :src="require('@/assets/maitsev-logo.png')"
+              alt="Post Image"
+            />
           </a>
-          
+
           <button @click="likePost(post)" class="likePost">
             <!-- Use local image for the like button -->
             <img class="likeImage" src="@/assets/like.png" alt="Like Button" />
           </button>
+
+          <div class="comments">
+            <h2 v-if="post.comments && post.comments.length > 0">Comments:</h2>
+            <div
+              class="comment"
+              v-for="comment in post.comments"
+              :key="comment.id"
+            >
+              <div class="commentInfo">
+                <p>Date: {{ comment.createdAt }}</p>
+                <p>By: {{ comment.postedBy }}</p>
+              </div>
+              <span>{{ comment.text }}</span>
+              <button
+                @click="deleteComment(post.id, comment.id)"
+                class="deleteComment"
+              >
+                Delete
+              </button>
+            </div>
+
+            <textarea
+              class="addcomment"
+              v-model="commentText"
+              placeholder="Enter your comment..."
+            ></textarea>
+
+            <button @click="submitComment(post)" class="submitComment">
+              Submit
+            </button>
+          </div>
         </div>
       </ul>
     </div>
@@ -47,6 +82,7 @@ export default {
         .then((data) => {
           this.posts = data;
           this.fetchUsernames();
+          this.fetchComments();
         })
         .catch((err) => console.log(err.message));
     },
@@ -59,6 +95,74 @@ export default {
           })
           .catch((err) => console.log(err.message));
       });
+    },
+    fetchComments() {
+      this.posts.forEach((post) => {
+        fetch(`http://localhost:8001/api/posts/${post.id}/comments`)
+          .then((response) => response.json())
+          .then((data) => {
+            post.comments = data; // Assign comments to the post
+          })
+          .catch((err) => console.log(err.message));
+      });
+    },
+    submitComment(post) {
+      if (!this.commentText.trim()) {
+        return;
+      }
+
+      const data = {
+        id: "08",
+        text: this.commentText,
+        createdAt: new Date(),
+        postedById: post.postedById,
+      };
+
+      fetch(`http://localhost:8001/api/posts/${post.id}/comments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Comment added successfully");
+            this.fetchComments();
+            this.commentText = "";
+          } else {
+            console.log("Failed to add comment");
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding comment:", error);
+        });
+    },
+    deleteComment(postId, commentId) {
+      fetch(`http://localhost:8001/api/posts/${postId}/comments/${commentId}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Comment deleted successfully");
+            const postIndex = this.posts.findIndex(
+              (post) => post.id === postId
+            );
+            if (postIndex !== -1) {
+              const commentIndex = this.posts[postIndex].comments.findIndex(
+                (comment) => comment.id === commentId
+              );
+              if (commentIndex !== -1) {
+                this.posts[postIndex].comments.splice(commentIndex, 1);
+              }
+            }
+          } else {
+            console.log("Failed to delete comment");
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting comment:", error);
+        });
     },
     likePost(post) {
       post.likes += 1;
@@ -144,5 +248,40 @@ a:hover {
 .likeImage {
   width: 20px;
   height: 20px;
+}
+
+.comments {
+  height: max-content;
+  width: 100%;
+  background-color: rgb(100, 100, 100);
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+}
+
+.comment {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(143, 141, 141);
+  padding: 5px;
+  border-radius: 10px;
+}
+.commentInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: rgb(180, 180, 180);
+}
+.addcomment {
+  margin-top: 10px;
+  background-color: rebeccapurple;
+}
+.deleteComment {
+  width: fit-content;
+  height: fit-content;
+  border-radius: 10px;
+  background-color: red;
+  padding: 5px;
 }
 </style>

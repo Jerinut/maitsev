@@ -3,7 +3,9 @@
   <div class="fetch">
     <h1>Recipes </h1>
     <div class="recipe-btn-container">
-      <button @click="openModal">Add Recipe</button>
+      <a href="/recipes/addrecipe">
+        <h1>Add a Recipe</h1>
+      </a>
     </div>
     <get-data :recipes="recipes"/>
   </div>

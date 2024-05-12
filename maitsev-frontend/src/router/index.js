@@ -9,6 +9,7 @@ import Profile from "@/views/Profile.vue";
 import Register from "@/views/Register.vue";
 import AddPost from "@/components/AddPost.vue";
 import APost from '@/components/APost.vue';
+import AddRecipe from '@/components/AddRecipe.vue';
 
 
 
@@ -38,6 +39,11 @@ const routes = [
         path: '/recipes',
         name: Recipes,
         component: Recipes,
+    },
+    {
+        path: '/recipes/addrecipe',
+        name: AddRecipe,
+        component: AddRecipe,
     },
     {
         path: '/others',

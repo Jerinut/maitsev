@@ -13,11 +13,14 @@
       <div class="navbar-menu" v-if="isAuthorized">
         <div class="navbar-end">
           <nav class="dropdown notification">
-            <button class="dropbtn" @click="toggleDropdown">Notifications</button>
-            <div v-if="showDropdown" class="dropdown-content">
-              <p class="notification" v-for="notification in notifications" :key="notification.id">
-                {{ notification.text }}
-              </p>
+            <button class="dropbtn" @click="toggleNotificationDropdown">Notifications</button>
+            <div  class="dropdown-content">
+              <div v-for="notification in notifications" :key="notification.id" class="notification-item">
+                <div :class="getStatusClass(notification.status)">
+                  <p :style="{fontWeight: 500}"> {{ notification.status }}</p>
+                  <p> {{ notification.message }}</p>
+                </div>
+              </div>
             </div>
           </nav>
           <router-link to="/others" class="navbar-item">Others</router-link>
@@ -25,10 +28,10 @@
           <router-link to="/recipes" class="navbar-item">Recipes</router-link>
           <router-link to="/chat" class="navbar-item">Chat</router-link>
           <nav class="dropdown user-menu">
-            <button class="dropbtn" @click="toggleDropdown">
+            <button class="dropbtn" @click="toggleUserMenuDropdown">
               <img class="user-menu-img" src="../assets/user-menu.png" alt="User Menu">
             </button>
-            <div v-if="showDropdown" class="dropdown-content">
+            <div  class="dropdown-content">
               <router-link to="/profile/e3cf4b4b-a57b-41ba-a19e-355b75f90a2e" class="navbar-item">My Profile</router-link>
               <button class="dropbtn" @click="logout">Logout</button>
             </div>
@@ -51,32 +54,42 @@ export default {
   name: 'HeaderComponent',
   data() {
     return {
-      showDropdown: true,
-      isAuthorized: true, // Replace with your actual authorization logic
-      notifications: [] // Replace with your actual notifications data
+      isAuthorized: true,
+      notifications: [],
+      userId: "02" //Placeholder
     }
   },
   created() {
-    // Fetch notifications when component is created
-    // Replace 'fetchNotifications' with your actual method
     this.notifications = this.fetchNotifications();
   },
   methods: {
-    fetchNotifications() {
-      // Fetch notifications from your API or data source
-      // This is just a placeholder
-      return [
-        { id: 1, text: 'Notification 1' },
-        { id: 2, text: 'Notification 2' },
-        // Add more notifications as needed
-      ];
+    async fetchNotifications(userId) {
+      const response = await fetch(`http://localhost:8006/api/notifications/user/${userId}`);
+      let responseJson = await response.json();
+      console.log(responseJson)
+      if(responseJson?.length > 0) {
+        this.notifications = responseJson
+      }
     },
-    toggleDropdown() {
-      this.showDropdown = !this.showDropdown;
+    getStatusClass(status) {
+      switch (status) {
+        case 'NEW CHAT':
+          return 'new-chat';
+        case 'NEW MESSAGE':
+          return 'new-message';
+        case 'NEW REVIEW':
+          return 'new-review';
+        default:
+          return '';
+      }
     },
     logout(){
       console.log("Logged out.")
     }
+  },
+  mounted() {
+    // const userId = 'your_user_id_here';
+    this.fetchNotifications(this.userId);
   }
 }
 </script>
@@ -92,9 +105,7 @@ export default {
   position: sticky;
   top: 24px;
 }
-.navbar-menu * {
-  margin-left: 20px;
-}
+
 .user-menu-img {
   width: 48px;
 }
@@ -112,6 +123,7 @@ export default {
   color: #333;
   font-size: 16px;
   font-weight: 600;
+  margin-left: 20px;
 }
 .notification, .user-menu {
   position: relative;
@@ -121,9 +133,18 @@ export default {
 }
 .user-menu > .dropdown-content {
   right: 4px;
+  padding: 16px 6px;
+  flex-direction: column;
+  min-width: 160px;
+}
+.notification > .dropdown-content {
+  max-height: 400px;
+  overflow-y: auto;
+  min-width: 240px;
 }
 .user-menu  .dropbtn {
   margin-top: 16px;
+  margin-left: 20px;
 }
 .dropbtn {
   background-color: transparent;
@@ -138,12 +159,25 @@ export default {
   display: none;
   position: absolute;
   background-color: #fafafa;
-  min-width: 160px;
   z-index: 1;
-  padding: 16px 6px;
 }
-
 .dropdown:hover .dropdown-content {
   display: block;
+}
+.notification-item {
+  padding: 0px;
+}
+.notification-item > div {
+  padding: 1px 0;
+  border-bottom: 1px solid #e3e3e3;
+}
+.new-chat {
+  background-color: #dff0d8;
+}
+.new-message {
+  background-color: #d9edf7;
+}
+.new-review {
+  background-color: #fcf8e3;
 }
 </style>

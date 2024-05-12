@@ -257,8 +257,7 @@ POST  http://localhost:8005/api/chats HTTP/1.1
 content-type: application/json
 
 {
-  "id": "14",
-  "user1Id": "15",
+  "user1Id": "22",
   "user2Id": "16",
   "createdAt": "2024-04-28"
 }
@@ -283,14 +282,13 @@ GET http://localhost:8005/api/chats/01/messages
 GET http://localhost:8005/api/chats/01/messages/03
 
 ### Add a message to a chat
-POST http://localhost:8005/api/chats/01/messages HTTP/1.1
+POST http://localhost:8005/api/chats/4260622f-8fd3-4bb2-bb5b-a0885bf01509/messages HTTP/1.1
 content-type: application/json
 
 {
-  "id": "09",
   "sender": "we",
   "receiver": "them",
-  "content": "Hello, how old are you?",
+  "content": "Hello0, how old are you?",
   "createdAt": "2024-04-28"
 }
 

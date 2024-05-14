@@ -29,7 +29,7 @@ export default {
     }
     },
     mounted() {
-        fetch('http://localhost:8080/api/recipes')
+        fetch('http://localhost:8003/api/recipes')
         .then((response) => 
         response.json())
         .then(data => this.recipes = data)

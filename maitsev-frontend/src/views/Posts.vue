@@ -112,7 +112,6 @@ export default {
       }
 
       const data = {
-        id: "08",
         text: this.commentText,
         createdAt: new Date(),
         postedById: post.postedById,

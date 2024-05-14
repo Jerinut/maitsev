@@ -2,9 +2,7 @@
   <div class="form">
     <h3>Add a Post</h3>
 
-    <label for="id">Id: </label>
-    <input name="id" type="text" id="id" required v-model="post.id" />
-
+    
     <label for="description">Description: </label>
     <input
       name="description"
@@ -37,13 +35,12 @@ export default {
   data() {
     return {
       post: {
-        id: "",
         description: "",
         imgUrl: "",
         tags: [],
         likes: 0,
         createdAt: new Date(),
-        postedById: "Fidan",
+        postedById: "01",
       },
     };
   },

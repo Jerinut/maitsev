@@ -57,6 +57,14 @@
         @keyup.enter="addIngredients"
         placeholder="Enter ingredient separated by commas"
       />
+      <!-- <input
+      name="tags"
+      type="text"
+      id="tags"
+      v-model="tagInput"
+      @keyup.enter="addTag"
+      placeholder="Enter ingredients separated by commas"
+    /> -->
   
       <button @click="addRecipe" class="addRecipe">Add Recipe</button>
     </div>
@@ -86,7 +94,14 @@
         this.recipe.ingredients.push(...ingredient);
         this.ingredientInput = "";
       },
+    //   addTag() {
+    //     console.log(this.tagInput,"hello")
+    //   const tags = this.tagInput.split(",").map((tag) => tag.trim());
+    //   this.recipe.ingredients.push(...tags);
+    //   this.tagInput = "";
+    // },
       addRecipe() {
+        this.addIngredients()
         // Send an HTTP POST request to the specified URI with the defined body
         console.log(JSON.stringify(this.recipe))
         fetch("http://localhost:8003/api/recipes", {

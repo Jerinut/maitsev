@@ -1,6 +1,7 @@
 <template>
     <div class="card-container">
       <div v-for="recipe in recipes" :key="recipe.id">
+        <a class="singlerecipe" :href="'/recipes/' + recipe.id">
         <div class="card-bg">
           <img class="card-image" v-if="recipe.image" :src="recipe.image" alt="Image" />
           <img class="card-image" v-else src="../assets/food-stock.png" alt="Placeholder Image" />
@@ -10,8 +11,13 @@
             <h3>Time to cook :{{ recipe.cookingTime}}</h3>
             <h3>Cuisine Type : {{recipe.cuisineType}}</h3>
             <h3>Steps Needed : {{recipe.steps}}</h3>
+            <label for="ingredients">Ingredients: </label>
+            <ul>
+              <li v-for="(ingredient, index) in recipe.ingredients" :key="index">{{ ingredient }}</li>
+            </ul> <br />
             </div>
         </div>
+      </a>
       </div>
     </div>
   </template>

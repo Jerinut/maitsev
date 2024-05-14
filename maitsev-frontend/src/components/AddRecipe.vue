@@ -2,9 +2,7 @@
     <div class="form">
       <h3>Add a Recipe</h3>
   
-      <label for="id">Id: </label>
-      <input name="id" type="text" id="id" required v-model="recipe.id" />
-  
+      
       <label for="title">Title: </label>
       <input
         name="title"
@@ -12,6 +10,15 @@
         id="title"
         required
         v-model="recipe.title"
+      />
+
+      <label for="title">Cuisine Type: </label>
+      <input
+        name="cuisineType"
+        type="cuisineType"
+        id="cuisineType"
+        required
+        v-model="recipe.cuisineType"
       />
 
       <label for="Serving Time">Serving Size: </label>
@@ -40,16 +47,14 @@
         required
         v-model="recipe.steps"
       />
-  
-  
      
-      <label for="tags">Ingredients: </label>
+      <label for="ingredients">Ingredients: </label>
       <input
         name="ingredients"
         type="text"
-        id="ingredient"
-        v-model="recipe.ingredients"
-        @keyup.enter="addIngredient"
+        id="ingredients"
+        v-model="ingredientInput"
+        @keyup.enter="addIngredients"
         placeholder="Enter ingredient separated by commas"
       />
   
@@ -63,7 +68,6 @@
     data() {
       return {
         recipe: {
-          id: "",
           title:"",
           ingredients: [],
           servingSize: 0,
@@ -76,13 +80,16 @@
     },
     methods: {
       addIngredients() {
-        const recipe = this.ingredientInput.split(",").map((tag) => tag.trim());
-        this.recipe.ingredients.push(...recipe);
-        this.tagInput = "";
+        console.log(this.ingredientInput)
+        const ingredient = this.ingredientInput.split(",").map((ingredient) => ingredient.trim());
+       
+        this.recipe.ingredients.push(...ingredient);
+        this.ingredientInput = "";
       },
       addRecipe() {
         // Send an HTTP POST request to the specified URI with the defined body
-        fetch("http://localhost:8003/api/recipe", {
+        console.log(JSON.stringify(this.recipe))
+        fetch("http://localhost:8003/api/recipes", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -94,7 +101,7 @@
               console.log("Post added successfully");
               this.$router.push("/recipes"); // Redirect to the posts page after successful addition
             } else {
-              console.log("Failed to add recipe");
+              console.log("Failed to add recipe",response.error);
             }
           })
           .catch((error) => {

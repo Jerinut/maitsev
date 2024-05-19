@@ -32,12 +32,4 @@ public class Recipe {
 
         private String postedById;
 
-
-
-
-        @PrePersist
-        private void ensureId() {
-                this.id = (id == null) ? UUID.randomUUID().toString() : this.id;
-        }
-
 }

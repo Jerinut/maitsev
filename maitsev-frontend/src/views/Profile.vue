@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { authState } from '../auth';
+import { jwtDecode } from 'jwt-decode';
 
 export default {
   name: "Profile",
@@ -53,14 +53,19 @@ export default {
         likedIngredients: [],
         dislikedIngredients: []
       },
-      cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian'],
+      cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian', 'Vegetarian'],
       likedIngredients: ['Salt', 'Sugar', 'Pepper', 'Tomato'],
       dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive', 'Onion', 'Garlic']
     };
   },
   computed: {
     isOwnProfile() {
-      return this.$route.params.id === authState.user?.id;
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        const decoded = jwtDecode(token);
+        return this.$route.params.id === decoded.userId;
+      }
+      return false;
     }
   },
   methods: {
@@ -75,11 +80,15 @@ export default {
     updateProfile() {
       if (!this.isOwnProfile) return; // Prevent updating if not viewing own profile
 
-      const id = authState.user.id;
+      const token = localStorage.getItem('jwtToken');
+      const decoded = jwtDecode(token);
+      const id = decoded.userId;
+      
       fetch(`http://localhost:8000/api/profiles/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(this.profile),
       })
@@ -101,7 +110,13 @@ export default {
     }
   },
   mounted() {
-    this.fetchProfile(this.$route.params.id);
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      const decoded = jwtDecode(token);
+      this.fetchProfile(decoded.userId); // Fetch profile for logged-in user
+    } else {
+      this.fetchProfile(this.$route.params.id); // Fallback to route ID
+    }
   },
 };
 </script>

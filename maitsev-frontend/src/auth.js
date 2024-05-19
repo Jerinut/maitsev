@@ -1,18 +1,18 @@
 import { reactive } from 'vue';
+import { jwtDecode } from 'jwt-decode';
 
 export const authState = reactive({
   isAuthorized: !!localStorage.getItem('jwtToken'),
-  user: JSON.parse(localStorage.getItem('user')),
-  login(user, token) {
+  user: localStorage.getItem('jwtToken') ? jwtDecode(localStorage.getItem('jwtToken')) : null,
+  login(token) {
     this.isAuthorized = true;
-    this.user = user;
+    const decodedToken = jwtDecode(token);
+    this.user = { id: decodedToken.userId, ...decodedToken };
     localStorage.setItem('jwtToken', token);
-    localStorage.setItem('user', JSON.stringify(user));
   },
   logout() {
     this.isAuthorized = false;
     this.user = null;
     localStorage.removeItem('jwtToken');
-    localStorage.removeItem('user');
   }
 });

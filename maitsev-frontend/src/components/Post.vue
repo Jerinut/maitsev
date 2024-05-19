@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { authState } from '@/auth';
+
 
 export default {
   name: "Post",

@@ -339,3 +339,11 @@ GET http://localhost:8006/api/notifications/user/20
 
 ### Delete a notification
 DELETE http://localhost:8006/api/notifications/03
+
+### Create a new user with Role/Authority USER
+POST  http://localhost:8080/api/auth/signup HTTP/1.1
+content-type: application/json
+
+{
+    "name": "user0", "password": "user", "roles": "USER"
+}

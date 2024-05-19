@@ -1,178 +1,109 @@
 <template>
- <div class="root">
-   <div class="login-form">
-     <h2>Login</h2>
-     <form @submit.prevent="handleLoginSubmit">
-       <div class="form-group">
-         <label for="username">Username:</label>
-         <input type="text" id="username" v-model="form.username" required>
-       </div>
-       <div class="form-group">
-         <label for="password">Password:</label>
-         <input type="password" id="password" v-model="form.password" required>
-       </div>
-       <button type="submit">Login</button>
-     </form>
-     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-     <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
-   </div>
-   <div class="signup-form">
-     <h2>Sign Up</h2>
-     <form @submit.prevent="handleSubmit">
-       <div class="form-group">
-         <label for="username">Username:</label>
-         <input type="text" id="username" v-model="form.username" required>
-       </div>
-       <div class="form-group">
-         <label for="password">Password:</label>
-         <input type="password" id="password" v-model="form.password" required>
-       </div>
-       <div class="form-group">
-         <label for="bio">Bio:</label>
-         <textarea id="bio" v-model="form.bio"></textarea>
-       </div>
-       <div class="form-group">
-         <label for="cuisines">Cuisines:</label>
-         <select id="cuisines" v-model="form.cuisines" multiple required>
-           <option v-for="cuisine in cuisines" :key="cuisine" :value="cuisine">{{ cuisine }}</option>
-         </select>
-       </div>
-       <div class="form-group">
-         <label for="likedIngredients">Liked Ingredients:</label>
-         <select id="likedIngredients" v-model="form.likedIngredients" multiple required>
-           <option v-for="ingredient in likedIngredients" :key="ingredient" :value="ingredient">{{ ingredient }}</option>
-         </select>
-       </div>
-       <div class="form-group">
-         <label for="dislikedIngredients">Disliked Ingredients:</label>
-         <select id="dislikedIngredients" v-model="form.dislikedIngredients" multiple required>
-           <option v-for="ingredient in dislikedIngredients" :key="ingredient" :value="ingredient">{{ ingredient }}</option>
-         </select>
-       </div>
-       <button type="submit">Sign Up</button>
-     </form>
-     <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-     <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
-   </div>
- </div>
+  <div class="form">
+        <h3>SignUp</h3>
+        <label for="username">User Name</label>
+        <input type="text" name="username"  required v-model="username">
+        <label for="password">Password</label>
+        <input type="password" name="password" required v-model="password">
+        <label for="roles">Role</label>
+        <input type="text" name="roles" required v-model="roles">
+        <button @click="SignUp" class="SignUp">SignUp</button>
+  </div>
 </template>
 
 <script>
+import jwt_decode from 'jwt-decode';
+
 export default {
-  data() {
+name: "SignUp", 
+data: function() {
     return {
-      form: {
-        username: '',
-        password: '',
-        bio: '',
-        cuisines: [],
-        likedIngredients: [],
-        dislikedIngredients: []
-      },
-      errorMessage: '',
-      successMessage: '',
-      // Sample options for cuisines, liked ingredients, and disliked ingredients
-      cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian'],
-      likedIngredients: ['Salt', 'Sugar', 'Pepper', 'Tomato'],
-      dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive']
-    };
+      username: '',
+      password: '',
+      roles: '', 
+      token:'',
+      decodedToken: ''
+    }
   },
   methods: {
-    handleSubmit() {
-      const apiUrl = 'http://localhost:8000/api/profiles';
-      fetch(apiUrl, {
-        method: 'POST',
+  async SignUp() {
+      var data = {
+        name: this.username,
+        password: this.password,
+        roles: this.roles
+      };
+      
+      // using Fetch - post method - send an HTTP post request to the specified URI with the defined body
+      await fetch("http://localhost:8080/api/auth/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(this.form)
+          body: JSON.stringify(data),
       })
-      .then(() => {
-        // Redirect or perform any follow-up actions immediately after sending the data
-        console.log('Form submitted');
-        this.$router.push("/register"); // Adjust the path as needed
-      })
-      .catch(error => {
-        console.error('Failed to submit form:', error);
-        this.errorMessage = 'Submission failed';
+      .then(response => response.text())
+      .then(response => {
+        //saving the jwt in the token variable
+        this.token = response;
+        if (this.token.startsWith("ey")){
+        //decoding the jwt and save it in the decodedToken variable
+        this.decodedToken = jwt_decode(this.token);
+        // saving the returned user role into the roles variable
+        this.roles = this.decodedToken.roles
+        console.log(this.decodedToken.roles);
+        // saving the token into the windows local storage 
+        localStorage.setItem('jwtToken',  this.token);
+        console.log(localStorage.getItem('jwtToken'));
+        this.$router.push("/");
+      }}) 
+      .catch((e) => {
+        console.log(e);
+        console.log("error");
       });
-    }
+    },
+  }, 
   }
-};
 </script>
 
 <style scoped>
-
-.root {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+.form {
+  max-width: 420px;
+  margin: 30px auto;
+  background: rgb(167, 154, 154);
+  text-align: left;
+  padding: 40px;
+  border-radius: 10px;
 }
-.login-form {
-  min-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  height: max-content;
+h3 {
+  text-align: center;
+  color: rgb(8, 110, 110);
 }
-.signup-form {
-  min-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
 label {
-  display: block;
+  color: rgb(8, 110, 110);
+  display: inline-block;
+  margin: 25px 0 15px;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   font-weight: bold;
 }
-
-input[type="text"],
-input[type="password"],
-textarea,
-select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-select[multiple] {
-  height: auto;
-}
-
-button {
+input {
   display: block;
+  padding: 10px 6px;
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
+  box-sizing: border-box;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border-bottom: 1px solid white;
+  color: blue;
 }
-
-.error-message,
-.success-message {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 4px;
-}
-
-.error-message {
-  background-color: #ffcdd2;
-  color: #c62828;
-}
-
-.success-message {
-  background-color: #c8e6c9;
-  color: #2e7d32;
+button {
+  background: rgb(8, 110, 110);
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: white;
+  border-radius: 20px;
+  align-items: center;
+  text-align: center;
 }
 </style>

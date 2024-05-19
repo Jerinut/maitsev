@@ -11,11 +11,12 @@
 </template>
 
 <script>
+import { authState } from '../auth';
+
 export default {
   data() {
     return {
-      profiles: [],
-      currentProfileId: '01'  // Placeholder
+      profiles: []
     };
   },
   created() {
@@ -26,20 +27,22 @@ export default {
       fetch('http://localhost:8000/api/profiles')
         .then(response => response.json())
         .then(data => {
-          this.profiles = data.filter(profile => profile.id !== this.currentProfileId);
+          // Filter out the current user's profile
+          this.profiles = data.filter(profile => profile.id !== authState.user.id);
         })
         .catch(error => console.error('Error fetching profiles:', error));
     },
     async startChat(profileId) {
-      const response = await fetch(`http://localhost:8005/api/chats/user/${this.currentProfileId}`);
+      const currentProfileId = authState.user.id;
+      const response = await fetch(`http://localhost:8005/api/chats/user/${currentProfileId}`);
       let responseJson = await response.json();
-      if(responseJson[0].user1Id === profileId || responseJson[0].user2Id === profileId){
+      if (responseJson[0].user1Id === profileId || responseJson[0].user2Id === profileId) {
         this.$router.push(`/chat/${responseJson[0].id}`)
-      }else{
-        let newChat ={
-          user1Id: this.currentProfileId,
+      } else {
+        let newChat = {
+          user1Id: currentProfileId,
           user2Id: profileId,
-          createdAt:new Date().toISOString(),
+          createdAt: new Date().toISOString(),
         }
         const response = await fetch(`http://localhost:8005/api/chats`, {
           method: 'POST',

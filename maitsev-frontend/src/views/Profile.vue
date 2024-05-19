@@ -39,9 +39,9 @@
   </div>
 </template>
 
-
-
 <script>
+import { authState } from '../auth';
+
 export default {
   name: "Profile",
   data() {
@@ -55,31 +55,27 @@ export default {
       },
       cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian'],
       likedIngredients: ['Salt', 'Sugar', 'Pepper', 'Tomato'],
-      dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive', 'Onion', 'Garlic'],
-      currentProfileId: '01' // Replace 'default-own-id' with logic to get the current user's ID
+      dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive', 'Onion', 'Garlic']
     };
   },
   computed: {
     isOwnProfile() {
-      // Check if the current route's user ID matches the "logged in" user's ID
-      return this.$route.params.id === this.currentProfileId;
+      return this.$route.params.id === authState.user?.id;
     }
   },
   methods: {
-    fetchProfile() {
-      const id = this.$route.params.id // Now using dynamic ID
+    fetchProfile(id) {
       fetch(`http://localhost:8000/api/profiles/${id}`)
         .then(response => response.json())
         .then(data => {
           this.profile = data;
-          this.isOwnProfile = (id === this.currentProfileId); // Logic to determine if it's the current user's profile
         })
         .catch(err => console.error('Failed to fetch profile:', err.message));
     },
     updateProfile() {
       if (!this.isOwnProfile) return; // Prevent updating if not viewing own profile
 
-      const id = this.currentProfileId;
+      const id = authState.user.id;
       fetch(`http://localhost:8000/api/profiles/${id}`, {
         method: "PUT",
         headers: {
@@ -89,7 +85,7 @@ export default {
       })
         .then(() => {
           console.log('Profile updated successfully');
-          this.$router.push("/profiles"); // Adjust the path as needed
+          this.$router.push(`/profile/${id}`); // Adjust the path as needed
         })
         .catch(error => {
           console.error('Failed to update profile:', error);
@@ -105,7 +101,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchProfile(this.currentProfileId);
+    this.fetchProfile(this.$route.params.id);
   },
 };
 </script>

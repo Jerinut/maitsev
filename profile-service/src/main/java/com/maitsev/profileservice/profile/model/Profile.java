@@ -28,7 +28,7 @@ public class Profile {
     //@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String username;
-    private String password;
+    //private String password;
     private String bio;
     @ElementCollection
     private List<String> cuisines;

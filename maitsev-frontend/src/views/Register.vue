@@ -59,6 +59,7 @@
 
 <script>
 import { authState } from '../auth';
+
 export default {
   data() {
     return {
@@ -104,10 +105,9 @@ export default {
 
         const responseJson = await response.json();
         const token = responseJson.jwtToken;
-        const userId = responseJson.userId;
 
         if (token.startsWith("ey")) {
-          authState.login({ id: userId }, token);
+          authState.login(token);
 
           this.successMessage = "Login successful!";
           this.$router.push("/");
@@ -142,7 +142,7 @@ export default {
         const userId = responseJson.userId;
 
         if (token.startsWith("ey")) {
-          authState.login({ id: userId }, token);
+          authState.login(token);
 
           const profileData = {
             id: userId,

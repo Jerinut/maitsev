@@ -10,12 +10,12 @@
 
       <ul>
         <Post
-            v-for="post in posts"
-            :key="post.id"
-            :post="post"
-            @like-post="likePost"
-            @submit-comment="submitComment"
-            @delete-comment="deleteComment"
+          v-for="post in posts"
+          :key="post.id"
+          :post="post"
+          @like-post="likePost"
+          @submit-comment="submitComment"
+          @delete-comment="deleteComment"
         />
       </ul>
     </div>
@@ -23,13 +23,14 @@
 </template>
 
 <script>
-
-import Post from '@/components/Post.vue';
+import Post from "@/components/Post.vue";
+import { authState } from "../auth";
+//import {authState} from '../auth';
 
 export default {
   name: "Posts",
   components: {
-    Post
+    Post,
   },
   data() {
     return {
@@ -39,34 +40,57 @@ export default {
   methods: {
     fetchPosts() {
       fetch(`http://localhost:8001/api/posts`)
-          .then((response) => response.json())
-          .then((data) => {
-            this.posts = data;
-            this.fetchUsernames();
-            this.fetchComments();
-          })
-          .catch((err) => console.log(err.message));
+        .then((response) => response.json())
+        .then((data) => {
+          this.posts = data;
+          this.fetchUsernames();
+          this.fetchComments();
+        })
+        .catch((err) => console.log(err.message));
     },
     fetchUsernames() {
       this.posts.forEach((post) => {
         fetch(`http://localhost:8000/api/profiles/${post.postedById}`)
-            .then((response) => response.json())
-            .then((data) => {
-              post.postedBy = data.username;
-            })
-            .catch((err) => console.log(err.message));
+          .then((response) => response.json())
+          .then((data) => {
+            post.postedBy = data.username;
+          })
+          .catch((err) => console.log(err.message));
       });
     },
     fetchComments() {
       this.posts.forEach((post) => {
         fetch(`http://localhost:8001/api/posts/${post.id}/comments`)
-            .then((response) => response.json())
-            .then((data) => {
-              post.comments = data;
-            })
-            .catch((err) => console.log(err.message));
+          .then((response) => response.json())
+          .then(async (comments) => {
+            // Fetch the username for each comment
+            for (const comment of comments) {
+              try {
+                const response = await fetch(
+                  `http://localhost:8000/api/profiles/${comment.postedById}`
+                );
+                if (response.ok) {
+                  const data = await response.json();
+                  // Add the username to the comment object
+                  comment.username = data.username;
+                } else {
+                  console.log(
+                    `Failed to fetch username for comment ${comment.id}`
+                  );
+                }
+              } catch (err) {
+                console.log(
+                  `Error fetching username for comment ${comment.id}: ${err.message}`
+                );
+              }
+            }
+            // Assign the comments array to the post
+            post.comments = comments;
+          })
+          .catch((err) => console.log(err.message));
       });
     },
+
     submitComment(post, commentText) {
       if (!commentText.trim()) {
         return;
@@ -75,7 +99,7 @@ export default {
       const data = {
         text: this.commentText,
         createdAt: new Date(),
-        postedById: post.postedById,
+        postedById: authState.user?.id,
       };
 
       fetch(`http://localhost:8001/api/posts/${post.id}/comments`, {
@@ -85,64 +109,85 @@ export default {
         },
         body: JSON.stringify(data),
       })
-          .then((response) => {
-            if (response.ok) {
-              console.log("Comment added successfully");
-              this.fetchComments();
-            } else {
-              console.log("Failed to add comment");
-            }
-          })
-          .catch((error) => {
-            console.error("Error adding comment:", error);
-          });
+        .then((response) => {
+          if (response.ok) {
+            console.log("Comment added successfully");
+            this.fetchComments();
+          } else {
+            console.log("Failed to add comment");
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding comment:", error);
+        });
     },
     deleteComment(postId, commentId) {
       fetch(`http://localhost:8001/api/posts/${postId}/comments/${commentId}`, {
         method: "DELETE",
       })
-          .then((response) => {
-            if (response.ok) {
-              console.log("Comment deleted successfully");
-              const postIndex = this.posts.findIndex(
-                  (post) => post.id === postId
+        .then((response) => {
+          if (response.ok) {
+            console.log("Comment deleted successfully");
+            const postIndex = this.posts.findIndex(
+              (post) => post.id === postId
+            );
+            if (postIndex !== -1) {
+              const commentIndex = this.posts[postIndex].comments.findIndex(
+                (comment) => comment.id === commentId
               );
-              if (postIndex !== -1) {
-                const commentIndex = this.posts[postIndex].comments.findIndex(
-                    (comment) => comment.id === commentId
-                );
-                if (commentIndex !== -1) {
-                  this.posts[postIndex].comments.splice(commentIndex, 1);
-                }
+              if (commentIndex !== -1) {
+                this.posts[postIndex].comments.splice(commentIndex, 1);
               }
-            } else {
-              console.log("Failed to delete comment");
             }
-          })
-          .catch((error) => {
-            console.error("Error deleting comment:", error);
-          });
+          } else {
+            console.log("Failed to delete comment");
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting comment:", error);
+        });
+    },
+    addLike() {
+      const tags = this.tagInput.split(",").map((tag) => tag.trim());
+      this.post.tags.push(...tags);
+      this.tagInput = "";
     },
     likePost(post) {
-      post.likes += 1;
+      // Create a copy of the post object to avoid directly mutating props
+      const updatedPost = { ...post };
 
+      // Check if the user ID is in the likes array
+      const userId = authState.user?.id;
+      const likesIndex = updatedPost.likes.indexOf(userId);
+
+      if (likesIndex !== -1) {
+        // Remove the user ID from the likes array
+        updatedPost.likes.splice(likesIndex, 1);
+      } else {
+        // Add the user ID to the likes array
+        updatedPost.likes.push(userId);
+      }
+
+      // Send the updated post to the server
       fetch(`http://localhost:8001/api/posts/${post.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(post),
+        body: JSON.stringify(updatedPost),
       })
-          .then((response) => {
-            if (response.ok) {
-              console.log("Post updated successfully");
-            } else {
-              console.log("Failed to update post");
-            }
-          })
-          .catch((error) => {
-            console.error("Error updating post:", error);
-          });
+        .then((response) => {
+          if (response.ok) {
+            console.log("Post updated successfully");
+            // Update the local post object to reflect the changes
+            this.$emit("update-post", updatedPost);
+          } else {
+            console.log("Failed to update post");
+          }
+        })
+        .catch((error) => {
+          console.error("Error updating post:", error);
+        });
     },
   },
   mounted() {

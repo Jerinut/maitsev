@@ -32,7 +32,7 @@
               <img class="user-menu-img" src="../assets/user-menu.png" alt="User Menu">
             </button>
             <div class="dropdown-content">
-              <router-link :to="`/profile/${authState.user.id}`" class="navbar-item">My Profile</router-link>
+              <router-link :to="`/profile/${userId}`" class="navbar-item">My Profile</router-link>
               <button class="dropbtn" @click="logout">Logout</button>
             </div>
           </nav>
@@ -51,18 +51,25 @@
 
 <script>
 import { authState } from '../auth';
+import { jwtDecode } from 'jwt-decode';
 
 export default {
   name: 'HeaderComponent',
   data() {
     return {
       authState,
-      notifications: []
+      notifications: [],
+      userId: null
     };
   },
   created() {
     if (this.authState.isAuthorized) {
-      this.fetchNotifications(this.authState.user.id);
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        const decoded = jwtDecode(token);
+        this.userId = decoded.userId;
+        this.fetchNotifications(this.userId);
+      }
     }
   },
   methods: {

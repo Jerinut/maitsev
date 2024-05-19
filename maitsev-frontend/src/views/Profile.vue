@@ -110,7 +110,13 @@ export default {
     }
   },
   mounted() {
-    this.fetchProfile(this.$route.params.id);
+    const token = localStorage.getItem('jwtToken');
+    if (token) {
+      const decoded = jwtDecode(token);
+      this.fetchProfile(decoded.userId); // Fetch profile for logged-in user
+    } else {
+      this.fetchProfile(this.$route.params.id); // Fallback to route ID
+    }
   },
 };
 </script>

@@ -27,13 +27,14 @@
    
       </div>
       <div>
-        <button @click="updateRecipe" class="updateRecipe">Update Recipe</button>
-        <button @click="deleteRecipe" class="deleteRecipe">Delete Recipe</button>
+        <button v-if="isOwnProfile" @click="updateRecipe" class="updateRecipe">Update Recipe</button>
+        <button v-if="isOwnProfile" @click="deleteRecipe" class="deleteRecipe">Delete Recipe</button>
       </div>
     </div>
   </template>
   
   <script>
+  import { authState } from '../auth';
   export default {
     name: "APost",
     data() {
@@ -50,6 +51,11 @@
         },
         postedBy: "",
       };
+    },
+    computed: {
+      isOwnProfile() {
+      return this.$route.params.id === authState.user?.id;
+    }
     },
     methods: {
       fetchRecipe(id) {

@@ -71,6 +71,7 @@
   </template>
     
     <script>
+    import { authState } from '../auth';
   export default {
     name: "AddRecipe",
     data() {
@@ -82,10 +83,15 @@
           cookingTime: "",
           cuisineType: "",
           steps: "",
-          postedById: 1
+          postedById: ""
         },
       };
     },
+    computed: {
+    isOwnProfile() {
+      return this.$route.params.id === authState.user?.id;
+    }
+  },
     methods: {
       addIngredients() {
         console.log(this.ingredientInput)

@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@CrossOrigin(origins = {"http://localhost:9090/",  "http://localhost:8080/"})
 // This is from the practice!! @CrossOrigin(origins = {"http://localhost:9090/"})
-@CrossOrigin(origins = {"http://localhost:8081/", "http://localhost:8080/", "http://localhost:8090/"})
+@CrossOrigin(origins = {"http://localhost:8080", "http://localhost:8081", "http://localhost:8090"})
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {

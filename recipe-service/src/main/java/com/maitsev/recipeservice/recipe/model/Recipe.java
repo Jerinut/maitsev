@@ -19,6 +19,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Recipe {
         @Id
+        @GeneratedValue(generator = "UUID")
+        @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
         private String id;
         private String title;
 
@@ -30,9 +32,7 @@ public class Recipe {
 
         private String postedById;
 
-        public Recipe(String id) {
-                this.id = id;
-        }
+
 
 
         @PrePersist

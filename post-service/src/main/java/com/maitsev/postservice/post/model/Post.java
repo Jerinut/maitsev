@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 public class Post {
   @Id
   @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   private String id;
   private String description;
   private String imgUrl;

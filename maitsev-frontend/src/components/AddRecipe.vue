@@ -71,7 +71,9 @@
   </template>
     
     <script>
+    import {authState} from '../auth';
   export default {
+    
     name: "AddRecipe",
     data() {
       return {
@@ -82,7 +84,7 @@
           cookingTime: "",
           cuisineType: "",
           steps: "",
-          postedById: 1
+          postedById: authState.user.id
         },
       };
     },
@@ -103,6 +105,7 @@
       addRecipe() {
         this.addIngredients()
         // Send an HTTP POST request to the specified URI with the defined body
+        // this.recipe.postedById = authState.user.id
         console.log(JSON.stringify(this.recipe))
         fetch("http://localhost:8003/api/recipes", {
           method: "POST",

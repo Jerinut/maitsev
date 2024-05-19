@@ -16,7 +16,7 @@ public class DataInitializer {
         return args -> {
             Profile profile1 = new Profile();
             profile1.setId("e3cf4b4b-a57b-41ba-a19e-355b75f90a2e");
-            profile1.setPassword("1234");
+            //profile1.setPassword("1234");
             profile1.setUsername("jerin");
             profile1.setBio("Bio for jerin");
             profile1.setCuisines(Arrays.asList("Italian", "Mexican", "Vegan"));
@@ -25,7 +25,7 @@ public class DataInitializer {
 
             Profile profile2 = new Profile();
             profile2.setId("01");
-            profile2.setPassword("1234");
+            //profile2.setPassword("1234");
             profile2.setUsername("kasper");
             profile2.setBio("Bio for kasper");
             profile2.setCuisines(Arrays.asList("Chinese", "Indian"));
@@ -34,7 +34,7 @@ public class DataInitializer {
 
             Profile profile3 = new Profile();
             profile3.setId("02");
-            profile3.setPassword("12345");
+            //profile3.setPassword("12345");
             profile3.setUsername("fidan");
             profile3.setBio("Bio for fidan");
             profile3.setCuisines(Arrays.asList("Chinese", "Indian"));
@@ -43,17 +43,17 @@ public class DataInitializer {
 
             Profile profile4 = new Profile();
             profile4.setId("03");
-            profile4.setPassword("123455");
+            //profile4.setPassword("123455");
             profile4.setUsername("henri");
             profile4.setBio("Bio for henri");
             profile4.setCuisines(Arrays.asList("Chinese", "Mexican"));
             profile4.setLikedIngredients(Arrays.asList("Rocca", "Cheese", "Tomato"));
             profile4.setDislikedIngredients(Arrays.asList("Egg", "Onion"));
             
-            profileRepository.save(profile1);
-            profileRepository.save(profile2);
-            profileRepository.save(profile3);
-            profileRepository.save(profile4);
+            //profileRepository.save(profile1);
+            //profileRepository.save(profile2);
+            //profileRepository.save(profile3);
+            //profileRepository.save(profile4);
         };
     }
 }

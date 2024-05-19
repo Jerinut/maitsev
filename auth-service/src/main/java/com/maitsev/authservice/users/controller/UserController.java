@@ -45,7 +45,6 @@ public class UserController {
                 .authenticate(new UsernamePasswordAuthenticationToken(userDto.getName(), userDto.getPassword()));
 
         if (authentication.isAuthenticated()) {
-            String jwtToken = jwtService.generateToken(userDto.getName());
             Optional<User> userOptional = userService.findByName(userDto.getName());
 
             if (!userOptional.isPresent()) {
@@ -53,6 +52,7 @@ public class UserController {
             }
 
             User user = userOptional.get();
+            String jwtToken = jwtService.generateToken(user.getName(), user.getId()); // Pass the user ID
 
             Map<String, Object> response = new HashMap<>();
             response.put("jwtToken", jwtToken);
@@ -74,7 +74,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<Map<String, Object>> signupUser(@RequestBody User user) {
         userService.addUser(user);
-        String jwtToken = jwtService.generateToken(user.getName());
+        String jwtToken = jwtService.generateToken(user.getName(), user.getId()); // Pass the user ID
 
         Map<String, Object> response = new HashMap<>();
         response.put("jwtToken", jwtToken);

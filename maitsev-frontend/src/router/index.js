@@ -10,6 +10,7 @@ import Register from "@/views/Register.vue";
 import AddPost from "@/components/AddPost.vue";
 import APost from '@/components/APost.vue';
 import AddRecipe from '@/components/AddRecipe.vue';
+import SingleRecipe from './../components/SingleRecipe.vue';
 
 import { authState } from '../auth';
 
@@ -43,6 +44,12 @@ const routes = [
         name: Recipes,
         component: Recipes,
         meta: { requiresAuth: true }
+    },
+    {
+        path: "/recipes/:id",
+        name: SingleRecipe,
+        component: SingleRecipe,
+        props: true  // Enables route params to be passed as props to the component
     },
     {
         path: '/recipes/addrecipe',

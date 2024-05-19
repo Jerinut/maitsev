@@ -1,15 +1,15 @@
 package com.maitsev.recipeservice.recipe.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name="recipetable")
@@ -19,6 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Recipe {
         @Id
+        @GeneratedValue(generator = "UUID")
+        @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
         private String id;
         private String title;
 
@@ -30,7 +32,12 @@ public class Recipe {
 
         private String postedById;
 
-        public Recipe(String id) {
-                this.id = id;
+
+
+
+        @PrePersist
+        private void ensureId() {
+                this.id = (id == null) ? UUID.randomUUID().toString() : this.id;
         }
+
 }

@@ -53,7 +53,7 @@ export default {
         likedIngredients: [],
         dislikedIngredients: []
       },
-      cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian'],
+      cuisines: ['Italian', 'Mexican', 'Japanese', 'Indian', 'Vegetarian'],
       likedIngredients: ['Salt', 'Sugar', 'Pepper', 'Tomato'],
       dislikedIngredients: ['Mushroom', 'Cilantro', 'Anchovy', 'Olive', 'Onion', 'Garlic']
     };

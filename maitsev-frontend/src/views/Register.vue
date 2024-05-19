@@ -90,7 +90,7 @@ export default {
       .then(() => {
         // Redirect or perform any follow-up actions immediately after sending the data
         console.log('Form submitted');
-        this.$router.push("/api/profiles"); // Adjust the path as needed
+        this.$router.push("/register"); // Adjust the path as needed
       })
       .catch(error => {
         console.error('Failed to submit form:', error);

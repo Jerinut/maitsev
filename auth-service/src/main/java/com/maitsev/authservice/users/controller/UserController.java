@@ -7,10 +7,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import com.esi.authservice.jwt.JwtService;
-import com.esi.authservice.users.dto.UserDto;
-import com.esi.authservice.users.model.User;
-import com.esi.authservice.users.service.UserService;
+import com.maitsev.authservice.jwt.JwtService;
+import com.maitsev.authservice.users.dto.UserDto;
+import com.maitsev.authservice.users.model.User;
+import com.maitsev.authservice.users.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 

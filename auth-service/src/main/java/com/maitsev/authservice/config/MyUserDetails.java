@@ -1,6 +1,5 @@
 package com.maitsev.authservice.config;
 
-
 import java.util.Arrays;
 import java.util.List;
 

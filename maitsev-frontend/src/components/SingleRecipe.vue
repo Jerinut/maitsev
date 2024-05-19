@@ -27,13 +27,14 @@
    
       </div>
       <div>
-        <button @click="updateRecipe" class="updateRecipe">Update Recipe</button>
-        <button @click="deleteRecipe" class="deleteRecipe">Delete Recipe</button>
+        <button v-if="isOwnProfile" @click="updateRecipe" class="updateRecipe">Update Recipe</button>
+        <button v-if="isOwnProfile" @click="deleteRecipe" class="deleteRecipe">Delete Recipe</button>
       </div>
     </div>
   </template>
   
   <script>
+  import {authState} from '../auth';
   export default {
     name: "APost",
     data() {
@@ -51,6 +52,13 @@
         postedBy: "",
       };
     },
+    computed: {
+    isOwnProfile() {
+      // console.log(this.recipe.postedById,"postedparams")
+      // console.log(authState.user.id,"useridfromauth")
+      return this.recipe.postedById === authState.user?.id;
+    }
+  },
     methods: {
       fetchRecipe(id) {
         fetch(`http://localhost:8003/api/recipes/${id}`)
@@ -64,11 +72,11 @@
           
       },
       fetchUserName() {
-        console.log(this.recipe.postedById)
+        // console.log(this.recipe.postedById)
         fetch(`http://localhost:8000/api/profiles/${this.recipe.postedById}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
+            console.log(data,"profile")
             this.postedBy = data.username; // Store the username in postedBy variable
           })
           .catch((err) => console.log(err.message));

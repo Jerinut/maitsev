@@ -96,7 +96,6 @@ export default {
       const response = await fetch(`http://localhost:8005/api/chats/user/${userId}`);
       let responseJson = await response.json();
 
-      console.log(responseJson)
 
       let chats = []
       for (let i = 0; i < responseJson.length; i++) {

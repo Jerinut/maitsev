@@ -1,5 +1,7 @@
 package com.maitsev.authservice.users.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,4 +27,8 @@ public class UserService {
         log.info("A new user  {} is added", user.toString());
         return user;
     } 
+
+    public Optional<User> findByName(String name) {
+        return userRepository.findByName(name);
+    }
 }

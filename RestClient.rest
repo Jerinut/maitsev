@@ -345,5 +345,17 @@ POST  http://localhost:8080/api/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-    "name": "user0", "password": "user", "roles": "USER"
+    "name": "user14", "password": "user", "roles": "USER"
+}
+
+### Login
+
+### login
+POST http://localhost:8080/api/auth/login HTTP/1.1
+content-type: application/json
+
+{
+
+    "name": "KasperTest12", "password": "parool"
+
 }

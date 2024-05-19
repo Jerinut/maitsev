@@ -17,7 +17,7 @@ public class ProfileDto {
     @Id
     private String id;
     private String username;
-    private String password;
+    //private String password;
     private String bio;
     private List<String> cuisines;
     private List<String> likedIngredients;

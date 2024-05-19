@@ -2,7 +2,7 @@
   <header>
     <nav class="navbar">
       <div class="navbar-brand">
-        <router-link v-if="isAuthorized" to="/">
+        <router-link v-if="authState.isAuthorized" to="/">
           <img class="main-logo" src="../assets/maitsev-logo.png" alt="Logo">
         </router-link>
         <router-link v-else to="/register">
@@ -10,15 +10,15 @@
         </router-link>
       </div>
 
-      <div class="navbar-menu" v-if="isAuthorized">
+      <div class="navbar-menu" v-if="authState.isAuthorized">
         <div class="navbar-end">
           <nav class="dropdown notification">
             <button class="dropbtn" @click="toggleNotificationDropdown">Notifications</button>
-            <div  class="dropdown-content">
+            <div class="dropdown-content">
               <div v-for="notification in notifications" :key="notification.id" class="notification-item">
                 <div :class="getStatusClass(notification.status)">
-                  <p :style="{fontWeight: 500}"> {{ notification.status }}</p>
-                  <p> {{ notification.message }}</p>
+                  <p :style="{fontWeight: 500}">{{ notification.status }}</p>
+                  <p>{{ notification.message }}</p>
                 </div>
               </div>
             </div>
@@ -31,8 +31,8 @@
             <button class="dropbtn" @click="toggleUserMenuDropdown">
               <img class="user-menu-img" src="../assets/user-menu.png" alt="User Menu">
             </button>
-            <div  class="dropdown-content">
-              <router-link to="/profile/01" class="navbar-item">My Profile</router-link>
+            <div class="dropdown-content">
+              <router-link :to="`/profile/${authState.user.id}`" class="navbar-item">My Profile</router-link>
               <button class="dropbtn" @click="logout">Logout</button>
             </div>
           </nav>
@@ -50,25 +50,31 @@
 </template>
 
 <script>
+import { authState } from '../auth';
+
 export default {
   name: 'HeaderComponent',
   data() {
     return {
-      isAuthorized: true,
-      notifications: [],
-      userId: "01" //Placeholder
-    }
+      authState,
+      notifications: []
+    };
   },
   created() {
-    this.notifications = this.fetchNotifications();
+    if (this.authState.isAuthorized) {
+      this.fetchNotifications(this.authState.user.id);
+    }
   },
   methods: {
     async fetchNotifications(userId) {
-      const response = await fetch(`http://localhost:8006/api/notifications/user/${userId}`);
-      let responseJson = await response.json();
-      console.log(responseJson)
-      if(responseJson?.length > 0) {
-        this.notifications = responseJson
+      try {
+        const response = await fetch(`http://localhost:8006/api/notifications/user/${userId}`);
+        let responseJson = await response.json();
+        if (responseJson?.length > 0) {
+          this.notifications = responseJson;
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
       }
     },
     getStatusClass(status) {
@@ -83,19 +89,22 @@ export default {
           return '';
       }
     },
-    logout(){
-      console.log("Logged out.")
+    logout() {
+      authState.logout();
+      this.$router.push('/register'); // Redirect to register page
+      console.log("Logged out.");
+    },
+    toggleNotificationDropdown() {
+      // Implement toggle functionality if needed
+    },
+    toggleUserMenuDropdown() {
+      // Implement toggle functionality if needed
     }
-  },
-  mounted() {
-    // const userId = 'your_user_id_here';
-    this.fetchNotifications(this.userId);
   }
 }
 </script>
 
 <style scoped>
-
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -142,7 +151,7 @@ export default {
   overflow-y: auto;
   min-width: 240px;
 }
-.user-menu  .dropbtn {
+.user-menu .dropbtn {
   margin-top: 16px;
   margin-left: 20px;
 }

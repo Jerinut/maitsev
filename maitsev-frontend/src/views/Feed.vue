@@ -3,7 +3,7 @@
 </script>
 
 <template>
-<p>This is your Feed.</p>
+<p>Welcome to our page.</p>
 </template>
 
 <style scoped>

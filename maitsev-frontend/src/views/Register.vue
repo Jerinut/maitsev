@@ -58,7 +58,6 @@
 </template>
 
 <script>
-//import jwt_decode from 'jwt-decode';
 import { authState } from '../auth';
 export default {
   data() {
@@ -84,98 +83,98 @@ export default {
     };
   },
   methods: {
-  async handleLoginSubmit() {
-    const loginData = {
-      name: this.loginForm.username,
-      password: this.loginForm.password
-    };
+    async handleLoginSubmit() {
+      const loginData = {
+        name: this.loginForm.username,
+        password: this.loginForm.password
+      };
 
-    try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(loginData)
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const responseJson = await response.json();
-      const token = responseJson.jwtToken;
-      const user = responseJson.user;
-
-      if (token.startsWith("ey")) {
-        authState.login(user, token);
-
-        this.successMessage = "Login successful!";
-        this.$router.push("/");
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      this.errorMessage = 'Login failed';
-    }
-  },
-  async handleSignupSubmit() {
-    const userData = {
-      name: this.signupForm.username,
-      password: this.signupForm.password,
-      roles: 'USER' // Hardcoded role
-    };
-
-    try {
-      const userResponse = await fetch("http://localhost:8080/api/auth/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(userData)
-      });
-
-      if (!userResponse.ok) {
-        throw new Error(`HTTP error! status: ${userResponse.status}`);
-      }
-
-      const responseJson = await userResponse.json();
-      const token = responseJson.jwtToken;
-      const user = responseJson.user;
-
-      if (token.startsWith("ey")) {
-        authState.login(user, token);
-
-        const profileData = {
-          id: user.id,
-          username: this.signupForm.username,
-          bio: this.signupForm.bio,
-          cuisines: this.signupForm.cuisines,
-          likedIngredients: this.signupForm.likedIngredients,
-          dislikedIngredients: this.signupForm.dislikedIngredients
-        };
-
-        const profileResponse = await fetch("http://localhost:8080/api/profiles", {
+      try {
+        const response = await fetch("http://localhost:8080/api/auth/login", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify(profileData)
+          body: JSON.stringify(loginData)
         });
 
-        if (!profileResponse.ok) {
-          throw new Error(`HTTP error! status: ${profileResponse.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        this.successMessage = "Signup successful!";
-        this.$router.push("/");
+        const responseJson = await response.json();
+        const token = responseJson.jwtToken;
+        const userId = responseJson.userId;
+
+        if (token.startsWith("ey")) {
+          authState.login({ id: userId }, token);
+
+          this.successMessage = "Login successful!";
+          this.$router.push("/");
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+        this.errorMessage = 'Login failed';
       }
-    } catch (error) {
-      console.error('Failed to register:', error);
-      this.errorMessage = 'Registration failed';
+    },
+    async handleSignupSubmit() {
+      const userData = {
+        name: this.signupForm.username,
+        password: this.signupForm.password,
+        roles: 'USER' // Hardcoded role
+      };
+
+      try {
+        const userResponse = await fetch("http://localhost:8080/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(userData)
+        });
+
+        if (!userResponse.ok) {
+          throw new Error(`HTTP error! status: ${userResponse.status}`);
+        }
+
+        const responseJson = await userResponse.json();
+        const token = responseJson.jwtToken;
+        const userId = responseJson.userId;
+
+        if (token.startsWith("ey")) {
+          authState.login({ id: userId }, token);
+
+          const profileData = {
+            id: userId,
+            username: this.signupForm.username,
+            bio: this.signupForm.bio,
+            cuisines: this.signupForm.cuisines,
+            likedIngredients: this.signupForm.likedIngredients,
+            dislikedIngredients: this.signupForm.dislikedIngredients
+          };
+
+          const profileResponse = await fetch("http://localhost:8080/api/profiles", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(profileData)
+          });
+
+          if (!profileResponse.ok) {
+            throw new Error(`HTTP error! status: ${profileResponse.status}`);
+          }
+
+          this.successMessage = "Signup successful!";
+          this.$router.push("/");
+        }
+      } catch (error) {
+        console.error('Failed to register:', error);
+        this.errorMessage = 'Registration failed';
+      }
     }
   }
-}
 };
 </script>
 

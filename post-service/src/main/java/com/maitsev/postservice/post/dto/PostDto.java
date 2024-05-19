@@ -3,6 +3,7 @@ package com.maitsev.postservice.post.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Id;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +21,9 @@ public class PostDto {
   private String id;
   private String description;
   private String imgUrl;
-  private Integer likes;
+  // private Integer likes;
+  @ElementCollection
+  private List<String> likes;
   private LocalDate createdAt;
   private String postedById;
   private List<String> tags;

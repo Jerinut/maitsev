@@ -34,13 +34,15 @@ public class Post {
   private String id;
   private String description;
   private String imgUrl;
-  private Integer likes;
+  // private Integer likes;
+  @ElementCollection
+  private List<String> likes;
   private LocalDate createdAt;
   private String postedById;
 
   @ElementCollection
   private List<String> tags;
-  
+
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
   private List<Comment> comments;
 }

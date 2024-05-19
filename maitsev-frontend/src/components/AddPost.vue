@@ -30,6 +30,7 @@
 </template>
   
   <script>
+  import {authState} from '../auth';
 export default {
   name: "AddPost",
   data() {
@@ -40,7 +41,7 @@ export default {
         tags: [],
         likes: 0,
         createdAt: new Date(),
-        postedById: "01",
+        postedById: authState.user?.id,
       },
     };
   },

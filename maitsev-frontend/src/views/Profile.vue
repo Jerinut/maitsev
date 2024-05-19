@@ -5,7 +5,7 @@
 
       <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" id="username" required v-model="profile.username" :disabled="!isOwnProfile" />
+        <input type="text" id="username" required v-model="profile.username" disabled />
       </div>
 
       <div class="form-group">

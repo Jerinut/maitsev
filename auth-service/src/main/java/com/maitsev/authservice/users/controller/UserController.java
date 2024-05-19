@@ -20,9 +20,6 @@ import com.maitsev.authservice.users.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-// @CrossOrigin(origins = {"http://localhost:9090/", "http://localhost:8080/"})
-// This is from the practice!! @CrossOrigin(origins =
-// {"http://localhost:9090/"})
 @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8081", "http://localhost:8090" })
 @RestController
 @RequestMapping("/api/auth")
@@ -41,7 +38,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> logInAndGetToken(@RequestBody UserDto userDto) {
 
         if (userDto.getName() == null || userDto.getPassword() == null) {
-            throw new UsernameNotFoundException("UserName or Password is Empty");
+            throw new UsernameNotFoundException("Username or Password is Empty");
         }
 
         Authentication authentication = authenticationManager
@@ -49,11 +46,17 @@ public class UserController {
 
         if (authentication.isAuthenticated()) {
             String jwtToken = jwtService.generateToken(userDto.getName());
-            Optional<User> user = userService.findByName(userDto.getName());
+            Optional<User> userOptional = userService.findByName(userDto.getName());
+
+            if (!userOptional.isPresent()) {
+                throw new UsernameNotFoundException("User not found");
+            }
+
+            User user = userOptional.get();
 
             Map<String, Object> response = new HashMap<>();
             response.put("jwtToken", jwtToken);
-            response.put("user", user);
+            response.put("userId", user.getId());
 
             return ResponseEntity.ok(response);
         } else {
@@ -75,7 +78,7 @@ public class UserController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("jwtToken", jwtToken);
-        response.put("user", user);
+        response.put("userId", user.getId());
 
         return ResponseEntity.ok(response);
     }

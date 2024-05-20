@@ -24,7 +24,7 @@
 
 <script>
 import Post from "@/components/Post.vue";
-import { authState } from "../auth";
+import { jwtDecode } from "jwt-decode";
 //import {authState} from '../auth';
 
 export default {
@@ -90,6 +90,14 @@ export default {
           .catch((err) => console.log(err.message));
       });
     },
+    getCurrentUser() {
+      const token = localStorage.getItem("jwtToken");
+      if (token) {
+        const decoded = jwtDecode(token);
+        return decoded.userId;
+      }
+      return "";
+    },
 
     submitComment(post, commentText) {
       if (!commentText.trim()) {
@@ -97,9 +105,9 @@ export default {
       }
 
       const data = {
-        text: this.commentText,
+        text: commentText,
         createdAt: new Date(),
-        postedById: authState.user?.id,
+        postedById: this.getCurrentUser(),
       };
 
       fetch(`http://localhost:8001/api/posts/${post.id}/comments`, {
@@ -147,17 +155,17 @@ export default {
           console.error("Error deleting comment:", error);
         });
     },
-    addLike() {
-      const tags = this.tagInput.split(",").map((tag) => tag.trim());
-      this.post.tags.push(...tags);
-      this.tagInput = "";
-    },
+
     likePost(post) {
       // Create a copy of the post object to avoid directly mutating props
       const updatedPost = { ...post };
 
+      // Delete fields that should be appended
+      delete updatedPost.postedBy;
+      delete updatedPost.comments;
+
       // Check if the user ID is in the likes array
-      const userId = authState.user?.id;
+      const userId = this.getCurrentUser();
       const likesIndex = updatedPost.likes.indexOf(userId);
 
       if (likesIndex !== -1) {

@@ -4,15 +4,28 @@
       <h3>A Post</h3>
 
       <label for="description">Description: </label>
-      <input v-if="isOwnProfile" name="description" type="text" id="description" required v-model="post.description"/>
-      <span v-else >{{ post.description }}</span> <br />
+      <input
+        v-if="isOwnProfile"
+        name="description"
+        type="text"
+        id="description"
+        required
+        v-model="post.description"
+      />
+      <span v-else>{{ post.description }}</span> <br />
 
       <label for="imgUrl">Image URL: </label>
-      <input v-if="isOwnProfile" name="imgUrl" type="text" id="imgUrl" v-model="post.imgUrl" />
-      <span v-else >{{ post.imgUrl }}</span> <br />
+      <input
+        v-if="isOwnProfile"
+        name="imgUrl"
+        type="text"
+        id="imgUrl"
+        v-model="post.imgUrl"
+      />
+      <span v-else>{{ post.imgUrl }}</span> <br />
 
       <label for="likes">Likes: </label>
-      <span>{{ post.likes }}</span> <br />
+      <span>{{ post.likes.length }}</span> <br />
 
       <label for="createdAt">Created At: </label>
       <span>{{ post.createdAt }}</span> <br />
@@ -23,18 +36,31 @@
       <label for="tags">Tags: </label>
       <ul>
         <li v-for="(tag, index) in post.tags" :key="index">{{ tag }}</li>
-      </ul> <br />
-
+      </ul>
+      <br />
+      <input v-if="isOwnProfile"
+        name="tags"
+        type="text"
+        id="tags"
+        v-model="tagInput"
+        @keyup.enter="addTag"
+        placeholder="Enter tags separated by commas"
+      />
     </div>
     <div>
-      <button v-if="isOwnProfile" @click="updatePost" class="updatePost">Update Post</button>
-      <button v-if="isOwnProfile" @click="deletePost" class="deletePost">Delete Post</button>
+      <button v-if="isOwnProfile" @click="updatePost" class="updatePost">
+        Update Post
+      </button>
+      <button v-if="isOwnProfile" @click="deletePost" class="deletePost">
+        Delete Post
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import {authState} from '../auth';
+//import {authState} from '../auth';
+import { jwtDecode } from "jwt-decode";
 export default {
   name: "APost",
   data() {
@@ -43,15 +69,21 @@ export default {
         id: "", // Add other attributes of the post here
         description: "",
         imgUrl: "",
-        likes: 0,
+        likes: [],
         createdAt: "",
         postedById: "",
-        tags: []
+        tags: [],
       },
       postedBy: "",
     };
   },
   methods: {
+    addTag() {
+      const tags = this.tagInput.split(",").map((tag) => tag.trim());
+      this.post.tags = []
+      this.post.tags.push(...tags);
+      this.tagInput = "";
+    },
     fetchPost(id) {
       fetch(`http://localhost:8001/api/posts/${id}`)
         .then((response) => response.json())
@@ -107,8 +139,13 @@ export default {
   },
   computed: {
     isOwnProfile() {
-      return this.post.postedById === authState.user?.id;
-    }
+      const token = localStorage.getItem("jwtToken");
+      if (token) {
+        const decoded = jwtDecode(token);
+        return this.post.postedById === decoded.userId;
+      }
+      return false;
+    },
   },
 };
 </script>

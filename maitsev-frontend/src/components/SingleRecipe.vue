@@ -21,7 +21,21 @@
       <ul>
         <li v-for="(ingredient, index) in recipe.ingredients" :key="index">{{ ingredient }}</li>
       </ul> <br />
- 
+         <div class="review">
+              <h2 v-if="reviews && reviews.length > 0">Reviews:</h2>
+              <div class="review" v-for="review in reviews" :key="review.id">
+                <div class="commentInfo">
+                  <p>Score: {{ review.score }}</p>
+                  <p>By: {{ review.postedBy }}</p>
+                </div>
+                <!-- <span>{{ comment.text }}</span> -->
+              </div>
+              <div>
+              <input name="review" type="integer" id="reviewType" required v-model="singleReview.score"/>
+              <button @click="submitReview(singleReview)" class="submitReview">Submit</button>
+            </div>
+            </div>
+
     </div>
     <div>
       <button v-if="isOwnProfile" @click="updateRecipe" class="updateRecipe">Update Recipe</button>
@@ -48,6 +62,14 @@ export default {
         postedById:""
       },
       postedBy: "",
+      reviews:[],
+      singleReview:{
+        id: "",
+        recipeId: "",
+        createdAt: null,
+        postedBy: "",
+        score: 0
+      }
     };
   },
   computed: {
@@ -58,6 +80,15 @@ export default {
         return this.recipe.postedById === decoded.userId;
       }
       return false;
+    },
+    getLoggedInUserId(){
+      const userId = localStorage.getItem('jwtToken');
+      if(token){
+        const decoded = jwtDecode(token);
+        return decoded
+      }else{
+        return null 
+      }
     }
   },
   methods: {
@@ -77,6 +108,36 @@ export default {
           this.postedBy = data.username; // Store the username in postedBy variable
         })
         .catch((err) => console.log(err.message));
+    },
+    fetchReviewforRecipe(){
+       fetch(`http://localhost:8002/api/recipes/01/reviews`)
+       .then((response) => response.json())
+       .then((data)=> 
+       {
+        this.reviews = data
+       }
+      ).catch((err) => console.log(err.message))
+    },
+    submitReview(review){
+      this.singleReview.postedBy = 
+      fetch("http://localhost:8002/api/review", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.reviews),
+      })
+        .then((response) => {
+          if (response.ok) {
+            console.log("Post added successfully");
+            this.$router.push("/posts"); // Redirect to the posts page after successful addition
+          } else {
+            console.log("Failed to add post");
+          }
+        })
+        .catch((error) => {
+          console.error("Error adding post:", error);
+        });
     },
     updateRecipe() {
       const token = localStorage.getItem('jwtToken');
@@ -119,6 +180,7 @@ export default {
   },
   mounted() {
     this.fetchRecipe(this.$route.params.id);
+    this.fetchReviewforRecipe(this.$route.params.id);
   },
 };
 </script>

@@ -48,7 +48,7 @@ public class ReviewController {
     }
 
     @GetMapping("/recipes/{id}/reviews/{reviewId}")
-    public Optional<ReviewDto> getSpecificProfilePost(@PathVariable String id, @PathVariable String reviewId) {
+    public Optional<ReviewDto> getSpecificRecipeReview(@PathVariable String id, @PathVariable String reviewId) {
         return reviewService.getSpecificRecipeReview(id, reviewId);
     }
 

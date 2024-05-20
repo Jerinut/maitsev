@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { Date } from 'core-js';
 import { jwtDecode } from 'jwt-decode';
 
 export default {
@@ -80,15 +81,6 @@ export default {
         return this.recipe.postedById === decoded.userId;
       }
       return false;
-    },
-    getLoggedInUserId(){
-      const userId = localStorage.getItem('jwtToken');
-      if(token){
-        const decoded = jwtDecode(token);
-        return decoded
-      }else{
-        return null 
-      }
     }
   },
   methods: {
@@ -100,6 +92,15 @@ export default {
           this.fetchUserName(data.postedById); // Fetch username after fetching recipe
         })
         .catch((err) => console.log(err.message));
+    },
+    getLoggedInUserId(){
+      const token = localStorage.getItem('jwtToken');
+      if(token){
+        const decoded = jwtDecode(token);
+        return decoded
+      }else{
+        return null 
+      }
     },
     fetchUserName() {
       fetch(`http://localhost:8000/api/profiles/${this.recipe.postedById}`)
@@ -118,25 +119,30 @@ export default {
        }
       ).catch((err) => console.log(err.message))
     },
-    submitReview(review){
-      this.singleReview.postedBy = 
+    submitReview(){
+      const token = localStorage.getItem('jwtToken');
+      this.singleReview.recipeId = this.$route.params.id
+      this.singleReview.postedBy = this.getLoggedInUserId().userId
+      this.singleReview.createdAt = Date.now().toString
+      console.log(JSON.stringify(this.singleReview))
       fetch("http://localhost:8002/api/review", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify(this.reviews),
+        body: JSON.stringify(this.singleReview),
       })
         .then((response) => {
           if (response.ok) {
-            console.log("Post added successfully");
-            this.$router.push("/posts"); // Redirect to the posts page after successful addition
+            console.log("review added successfully");
+            this.$router.push("/recipes"); // Redirect to the posts page after successful addition
           } else {
-            console.log("Failed to add post");
+            console.log("Failed to add review");
           }
         })
         .catch((error) => {
-          console.error("Error adding post:", error);
+          console.error("Error adding review:", error);
         });
     },
     updateRecipe() {

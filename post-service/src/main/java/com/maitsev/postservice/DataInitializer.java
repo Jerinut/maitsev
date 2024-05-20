@@ -20,7 +20,7 @@ public class DataInitializer {
             post1.setId("01");
             post1.setDescription("hello! this is the first post");
             post1.setImgUrl("imgurl");
-            post1.setLikes(12);
+            post1.setLikes(Arrays.asList("01", "02"));
             post1.setPostedById("01");
             post1.setTags(Arrays.asList("Vegan", "Spicy"));
             postRepository.save(post1);

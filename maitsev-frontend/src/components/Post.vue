@@ -2,13 +2,18 @@
   <div class="item">
     <a class="singlepost" :href="'/posts/' + post.id">
       <span class="info"> <b>Posted By:</b> {{ post.postedBy }} </span><br />
-      <span class="info"> <b>Likes:</b> {{ post.likes }} </span><br />
+      <span class="info"> <b>Likes:</b> {{ post.likes.length }} </span><br />
       <span class="info"> <b>Created At:</b> {{ post.createdAt }} </span><br />
-      <span class="info"> <b>Description:</b> {{ post.description }} </span><br />
-      <img class="postImage" :src="require('@/assets/maitsev-logo.png')" alt="Post Image" />
+      <span class="info"> <b>Description:</b> {{ post.description }} </span
+      ><br />
+      <img
+        class="postImage"
+        :src="require('@/assets/maitsev-logo.png')"
+        alt="Post Image"
+      />
     </a>
 
-    <button @click="likePost(post)" class="likePost">
+    <button v-if="!isOwnProfile" @click="likePost(post)" class="likePost">
       <img class="likeImage" src="@/assets/like.png" alt="Like Button" />
     </button>
 
@@ -17,47 +22,60 @@
       <div class="comment" v-for="comment in post.comments" :key="comment.id">
         <div class="commentInfo">
           <p>Date: {{ comment.createdAt }}</p>
-          <p>By: {{ comment.postedBy }}</p>
+          <p>By: {{ comment.username }}</p>
         </div>
-        <span>{{ comment.text }}</span>
-        <button @click="deleteComment(post.id, comment.id)" class="deleteComment">
+        <span>{{ comment.text }}</span> <br />
+        <button
+          v-if="comment.postedById === currentUser"
+          @click="deleteComment(post.id, comment.id)"
+          class="deleteComment"
+        >
           Delete
         </button>
       </div>
-
-      <textarea class="addcomment" v-model="commentText" placeholder="Enter your comment..."></textarea>
+      <textarea
+        class="addcomment"
+        v-model="commentText"
+        placeholder="Enter your comment..."
+      ></textarea>
       <button @click="submitComment(post)" class="submitComment">Submit</button>
     </div>
   </div>
 </template>
 
 <script>
-
+import { authState } from '@/auth';
 
 export default {
   name: "Post",
   props: {
-    post: Object
+    post: Object,
   },
   data() {
     return {
-      commentText: ''
+      commentText: "",
+      currentUser: authState.user?.id,
     };
+  },
+  computed: {
+    isOwnProfile() {
+      return this.post.postedById === authState.user?.id;
+    },
   },
   methods: {
     likePost(post) {
-      this.$emit('like-post', post);
+      this.$emit("like-post", post);
     },
     submitComment(post) {
       if (this.commentText.trim()) {
-        this.$emit('submit-comment', post, this.commentText);
-        this.commentText = '';
+        this.$emit("submit-comment", post, this.commentText);
+        this.commentText = "";
       }
     },
     deleteComment(postId, commentId) {
-      this.$emit('delete-comment', postId, commentId);
-    }
-  }
+      this.$emit("delete-comment", postId, commentId);
+    },
+  },
 };
 </script>
 

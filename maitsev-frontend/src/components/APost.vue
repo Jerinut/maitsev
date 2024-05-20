@@ -4,10 +4,12 @@
       <h3>A Post</h3>
 
       <label for="description">Description: </label>
-      <input name="description" type="text" id="description" required v-model="post.description"/>
+      <input v-if="isOwnProfile" name="description" type="text" id="description" required v-model="post.description"/>
+      <span v-else >{{ post.description }}</span> <br />
 
       <label for="imgUrl">Image URL: </label>
-      <input name="imgUrl" type="text" id="imgUrl" v-model="post.imgUrl" />
+      <input v-if="isOwnProfile" name="imgUrl" type="text" id="imgUrl" v-model="post.imgUrl" />
+      <span v-else >{{ post.imgUrl }}</span> <br />
 
       <label for="likes">Likes: </label>
       <span>{{ post.likes }}</span> <br />
@@ -25,13 +27,14 @@
 
     </div>
     <div>
-      <button @click="updatePost" class="updatePost">Update Post</button>
-      <button @click="deletePost" class="deletePost">Delete Post</button>
+      <button v-if="isOwnProfile" @click="updatePost" class="updatePost">Update Post</button>
+      <button v-if="isOwnProfile" @click="deletePost" class="deletePost">Delete Post</button>
     </div>
   </div>
 </template>
 
 <script>
+import {authState} from '../auth';
 export default {
   name: "APost",
   data() {
@@ -101,6 +104,11 @@ export default {
   },
   mounted() {
     this.fetchPost(this.$route.params.id);
+  },
+  computed: {
+    isOwnProfile() {
+      return this.post.postedById === authState.user?.id;
+    }
   },
 };
 </script>

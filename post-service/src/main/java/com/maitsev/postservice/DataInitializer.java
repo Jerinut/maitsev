@@ -17,7 +17,7 @@ public class DataInitializer {
     public CommandLineRunner loadData(PostRepository postRepository, CommentRepository commentRepository) {
         return args -> {
             Post post1 = new Post();
-            post1.setId("01");
+            // post1.setId("01");
             post1.setDescription("hello! this is the first post");
             post1.setImgUrl("imgurl");
             post1.setLikes(Arrays.asList("01", "02"));
@@ -26,7 +26,7 @@ public class DataInitializer {
             postRepository.save(post1);
 
             Comment comment1 = new Comment();
-            comment1.setId("01");
+            // comment1.setId("01");
             comment1.setText("This is a comment on the first post");
             comment1.setCreatedAt(LocalDateTime.now());
             comment1.setPostedById("02");

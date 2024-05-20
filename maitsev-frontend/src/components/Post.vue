@@ -8,7 +8,8 @@
       ><br />
       <img
         class="postImage"
-        :src="require('@/assets/maitsev-logo.png')"
+        :src="post.imgUrl || require('@/assets/maitsev-logo.png')"
+        @error="setDefaultImage"
         alt="Post Image"
       />
     </a>
@@ -44,7 +45,8 @@
 </template>
 
 <script>
-import { authState } from '@/auth';
+//import { authState } from '@/auth';
+import { jwtDecode } from 'jwt-decode';
 
 export default {
   name: "Post",
@@ -54,15 +56,28 @@ export default {
   data() {
     return {
       commentText: "",
-      currentUser: authState.user?.id,
+      currentUser: this.getCurrentUser(),
     };
   },
   computed: {
     isOwnProfile() {
-      return this.post.postedById === authState.user?.id;
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        const decoded = jwtDecode(token);
+        return this.post.postedById === decoded.userId;
+      }
+      return false;
     },
   },
   methods: {
+    getCurrentUser() {
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        const decoded = jwtDecode(token);
+        return decoded.userId;
+      }
+      return "";
+    },
     likePost(post) {
       this.$emit("like-post", post);
     },
@@ -74,6 +89,9 @@ export default {
     },
     deleteComment(postId, commentId) {
       this.$emit("delete-comment", postId, commentId);
+    },
+    setDefaultImage(event) {
+      event.target.src = require('@/assets/maitsev-logo.png');
     },
   },
 };

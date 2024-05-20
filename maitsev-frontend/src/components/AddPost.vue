@@ -2,7 +2,6 @@
   <div class="form">
     <h3>Add a Post</h3>
 
-    
     <label for="description">Description: </label>
     <input
       name="description"
@@ -14,6 +13,9 @@
 
     <label for="imgUrl">Image URL: </label>
     <input name="imgUrl" type="text" id="imgUrl" v-model="post.imgUrl" />
+    <div v-if="post.imgUrl">
+      <img class="postImage" :src="post.imgUrl" alt="Post Image" />
+    </div>
 
     <label for="tags">Tags: </label>
     <input
@@ -30,7 +32,8 @@
 </template>
   
   <script>
-  import {authState} from '../auth';
+//import { authState } from "../auth";
+import { jwtDecode } from "jwt-decode";
 export default {
   name: "AddPost",
   data() {
@@ -39,9 +42,9 @@ export default {
         description: "",
         imgUrl: "",
         tags: [],
-        likes: 0,
+        likes: [],
         createdAt: new Date(),
-        postedById: authState.user?.id,
+        postedById: this.getCurrentUser(),
       },
     };
   },
@@ -50,6 +53,14 @@ export default {
       const tags = this.tagInput.split(",").map((tag) => tag.trim());
       this.post.tags.push(...tags);
       this.tagInput = "";
+    },
+    getCurrentUser() {
+      const token = localStorage.getItem("jwtToken");
+      if (token) {
+        const decoded = jwtDecode(token);
+        return decoded.userId;
+      }
+      return "";
     },
     addPost() {
       // Send an HTTP POST request to the specified URI with the defined body
@@ -92,7 +103,7 @@ h3 {
 label {
   color: rgb(8, 110, 110);
   display: inline-block;
-  margin: 25px 0 15px;
+  margin: 20px;
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -116,6 +127,11 @@ button {
   border-radius: 20px;
   align-items: center;
   text-align: center;
+}
+.postImage {
+  max-width: 80%;
+  height: 150px;
+  margin: 10px;
 }
 </style>
   

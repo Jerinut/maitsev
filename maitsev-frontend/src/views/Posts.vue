@@ -159,9 +159,10 @@ export default {
     likePost(post) {
       // Create a copy of the post object to avoid directly mutating props
       const updatedPost = { ...post };
+
+      // Delete fields that should be appended
       delete updatedPost.postedBy;
-      console.log(updatedPost)
-      console.log(post)
+      delete updatedPost.comments;
 
       // Check if the user ID is in the likes array
       const userId = this.getCurrentUser();
